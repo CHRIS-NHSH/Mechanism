@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>機構學 — 機械如何運動？</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Noto+Serif+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0d0f;--surface:#12151a;--surface2:#1a1f28;--border:#252b36;--text:#e8e4db;--muted:#7a8394;--accent:#f05a28;--accent2:#f5a623;--green:#3fb68b;--blue:#4a9eff;--serif:'Noto Serif TC',serif;--sans:'Syne',sans-serif;--mono:'JetBrains Mono',monospace;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--serif);overflow-x:hidden;line-height:1.7;}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;z-index:0;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:52px;background:rgba(11,13,15,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;}
+.nav-brand{font-family:var(--sans);font-weight:800;font-size:.9rem;color:var(--accent);}
+.nav-links{display:flex;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-family:var(--mono);font-size:.65rem;letter-spacing:.08em;padding:0 .85rem;height:52px;display:flex;align-items:center;border-right:1px solid var(--border);transition:color .2s,background .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:rgba(255,255,255,.03);}
+.hamburger{display:none;background:none;border:none;cursor:pointer;padding:.5rem;flex-direction:column;gap:5px;}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);transition:all .3s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mobile-menu{display:none;position:fixed;top:52px;left:0;right:0;background:rgba(11,13,15,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:199;flex-direction:column;}
+.mobile-menu a{color:var(--muted);text-decoration:none;font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;padding:1rem 2.5rem;border-bottom:1px solid var(--border);display:block;transition:color .2s;}
+.mobile-menu a:hover{color:var(--text);}
+.mobile-menu.open{display:flex;}
+
+/* COMMON */
+section{position:relative;z-index:1;}
+.section-inner{max-width:1200px;margin:0 auto;padding:7rem 4rem;}
+.section-label{font-family:var(--mono);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:1.2rem;display:flex;align-items:center;gap:1rem;}
+.section-label::after{content:'';flex:0 0 40px;height:1px;background:var(--accent);}
+.section-title{font-family:var(--sans);font-weight:800;font-size:clamp(2rem,4vw,3.5rem);line-height:1.1;letter-spacing:-.02em;margin-bottom:1.5rem;}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.visible{opacity:1;transform:none;}
+sup.ref{font-family:var(--mono);font-size:.6rem;color:var(--accent2);cursor:pointer;margin-left:1px;}
+.ext-link{font-family:var(--mono);font-size:.72rem;color:var(--blue);text-decoration:none;letter-spacing:.05em;display:inline-flex;align-items:center;gap:.4rem;border-bottom:1px solid rgba(74,158,255,.3);padding-bottom:.15rem;transition:all .2s;}
+.ext-link:hover{color:var(--text);border-color:var(--text);}
+
+/* IMAGE */
+.img-block{position:relative;overflow:hidden;background:var(--surface2);border:1px solid var(--border);}
+.img-block img{width:100%;height:100%;object-fit:cover;display:block;}
+.img-caption{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;color:var(--muted);padding:.65rem .85rem;border-top:1px solid var(--border);background:rgba(0,0,0,.3);}
+
+/* VIDEO EMBED */
+.video-wrap{position:relative;padding-bottom:56.25%;background:#000;overflow:hidden;}
+.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+
+/* HERO */
+.hero{min-height:100vh;padding-top:52px;display:grid;grid-template-columns:1.1fr .9fr;position:relative;overflow:hidden;}
+.hero-left{padding:8rem 4rem 6rem 6rem;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2;}
+.hero-kicker{font-family:var(--mono);font-size:.72rem;letter-spacing:.3em;color:var(--accent);text-transform:uppercase;margin-bottom:2.5rem;display:flex;align-items:center;gap:1rem;}
+.hero-kicker::before{content:'';display:block;width:32px;height:2px;background:var(--accent);}
+.hero-title{font-family:var(--sans);font-weight:800;font-size:clamp(3.5rem,6vw,6rem);line-height:1;letter-spacing:-.03em;margin-bottom:2rem;}
+.hero-title .accent{color:var(--accent);}
+.hero-desc{font-size:1.1rem;color:var(--muted);max-width:500px;line-height:1.85;margin-bottom:3.5rem;}
+.hero-stats{display:flex;gap:2.5rem;}
+.hero-stat-n{font-family:var(--sans);font-weight:800;font-size:2rem;color:var(--accent);line-height:1;display:block;}
+.hero-stat-l{font-family:var(--mono);font-size:.65rem;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-top:.3rem;display:block;}
+.hero-right{position:relative;background:var(--surface);border-left:1px solid var(--border);overflow:hidden;}
+.hero-right::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 40% 50%,rgba(240,90,40,.06) 0%,transparent 70%);}
+.gear-canvas{width:100%;height:100%;position:absolute;inset:0;}
+.gr1{transform-origin:230px 260px;animation:gearCW 9s linear infinite;}
+.gr2{transform-origin:370px 190px;animation:gearCCW 3.6s linear infinite;}
+.gr3{transform-origin:130px 370px;animation:gearCCW 5.4s linear infinite;}
+@keyframes gearCW{to{transform:rotate(360deg);}}
+@keyframes gearCCW{to{transform:rotate(-360deg);}}
+.crank-anim{transform-origin:20px 40px;animation:gearCW 2.6s linear infinite;}
+.piston-anim{animation:pistonSlide 2.6s ease-in-out infinite;}
+@keyframes pistonSlide{0%,100%{transform:translateX(0)}50%{transform:translateX(36px)}}
+.hero-diagram-label{position:absolute;bottom:2rem;left:2rem;font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;color:rgba(255,255,255,.15);text-transform:uppercase;}
+
+/* INTRO STRIP */
+.intro-strip{background:var(--accent);padding:1.5rem 6rem;position:relative;z-index:1;overflow:hidden;}
+.intro-strip::before{content:'MECHANISM';position:absolute;right:2rem;font-family:var(--sans);font-weight:800;font-size:6rem;color:rgba(0,0,0,.1);letter-spacing:-.05em;line-height:1;pointer-events:none;}
+.intro-strip p{font-family:var(--sans);font-weight:600;font-size:1.05rem;color:#fff;line-height:1.6;}
+.intro-strip p em{font-style:normal;opacity:.75;font-size:.9rem;font-weight:400;font-family:var(--serif);}
+
+/* HISTORY */
+#history{background:var(--bg);}
+.history-layout{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+.history-timeline{display:flex;flex-direction:column;}
+.history-event{display:grid;grid-template-columns:90px 1fr;gap:1.5rem;padding:2rem 0;border-bottom:1px solid var(--border);}
+.history-event:first-child{padding-top:0;}
+.history-event:last-child{border-bottom:none;}
+.h-year{font-family:var(--mono);font-size:.82rem;color:var(--accent);font-weight:500;padding-top:.25rem;text-align:right;}
+.h-body h3{font-family:var(--sans);font-weight:700;font-size:1.05rem;margin-bottom:.5rem;}
+.h-body p{font-size:.88rem;color:var(--muted);line-height:1.8;}
+.h-person{font-family:var(--mono);font-size:.65rem;letter-spacing:.15em;color:var(--accent2);text-transform:uppercase;margin-bottom:.35rem;display:block;}
+.history-feature{position:sticky;top:80px;}
+.h-quote-card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);padding:3rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
+.h-quote-card::before{content:'"';position:absolute;top:-2rem;left:1.5rem;font-family:var(--sans);font-size:14rem;color:rgba(240,90,40,.06);line-height:1;pointer-events:none;}
+.h-quote-card blockquote{font-family:var(--serif);font-size:1.05rem;font-style:italic;line-height:1.85;color:var(--text);margin-bottom:1.5rem;position:relative;}
+.h-quote-card cite{font-family:var(--mono);font-size:.68rem;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;font-style:normal;}
+.h-resource-card{background:var(--surface2);border:1px solid var(--border);padding:1.75rem;margin-bottom:1rem;}
+.h-resource-card h4{font-family:var(--sans);font-weight:700;font-size:.95rem;margin-bottom:.75rem;display:flex;align-items:center;gap:.75rem;}
+.h-resource-card h4::before{content:'◈';color:var(--green);font-size:.7rem;}
+.h-resource-card p{font-size:.85rem;color:var(--muted);line-height:1.8;margin-bottom:1rem;}
+.history-img-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;}
+.history-img-grid .img-block{height:180px;}
+.history-img-grid .img-block img{object-fit:contain;background:#111;padding:.75rem;}
+
+/* CONCEPTS */
+#concepts{background:var(--surface);}
+.concepts-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);}
+.concept-card{background:var(--bg);padding:3rem;position:relative;overflow:hidden;transition:background .3s;}
+.concept-card:hover{background:var(--surface2);}
+.concept-card::after{content:attr(data-letter);position:absolute;bottom:-1rem;right:1rem;font-family:var(--sans);font-weight:800;font-size:8rem;color:rgba(255,255,255,.025);line-height:1;pointer-events:none;}
+.concept-en{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-bottom:1rem;display:block;}
+.concept-card h3{font-family:var(--sans);font-weight:800;font-size:1.8rem;letter-spacing:-.02em;margin-bottom:1.2rem;line-height:1.1;}
+.concept-card p{font-size:.92rem;color:var(--muted);line-height:1.85;margin-bottom:1.2rem;}
+.concept-box{background:var(--surface2);border-left:2px solid var(--accent);padding:1rem 1.25rem;font-family:var(--mono);font-size:.78rem;line-height:1.7;color:var(--text);}
+.concept-note{font-family:var(--mono);font-size:.68rem;color:var(--muted);line-height:1.7;margin-top:1rem;padding:.75rem 1rem;border:1px solid var(--border);}
+.dof-chips{display:flex;gap:.5rem;margin-top:1.2rem;flex-wrap:wrap;}
+.dof-chip{font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;padding:.3rem .7rem;border:1px solid var(--border);color:var(--muted);}
+.dof-chip.lit{border-color:var(--green);color:var(--green);background:rgba(63,182,139,.07);}
+
+/* GEARS */
+#gears{background:var(--bg);}
+.gear-intro-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;margin-bottom:4rem;}
+.gear-intro-text p{font-size:.92rem;color:var(--muted);line-height:1.85;margin-bottom:1rem;}
+.gear-intro-text h3{font-family:var(--sans);font-weight:700;font-size:1.35rem;letter-spacing:-.02em;margin-bottom:1rem;margin-top:2.5rem;}
+.gear-intro-text h3:first-child{margin-top:0;}
+.gear-formula-box{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent2);padding:2rem;margin-top:1.5rem;}
+.gear-formula-box .f-eq{font-family:var(--mono);font-size:1.3rem;color:var(--accent2);display:block;margin-bottom:1rem;}
+.gear-formula-box p{font-size:.85rem;color:var(--muted);line-height:1.8;}
+.gear-formula-box p strong{color:var(--text);}
+.gear-rules{list-style:none;display:flex;flex-direction:column;gap:.8rem;margin-top:1.5rem;}
+.gear-rules li{font-size:.9rem;color:var(--muted);line-height:1.7;padding-left:1.5rem;position:relative;}
+.gear-rules li::before{content:'→';position:absolute;left:0;color:var(--accent);font-family:var(--mono);font-size:.75rem;}
+.gear-rules li strong{color:var(--text);}
+
+.gear-types-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.gear-type-card{background:var(--surface);border:1px solid var(--border);overflow:hidden;transition:border-color .3s;}
+.gear-type-card:hover{border-color:var(--accent);}
+.gear-type-img{height:170px;overflow:hidden;background:#fff;}
+.gear-type-img img{width:100%;height:100%;object-fit:contain;padding:.75rem;}
+.gear-type-body{padding:1.5rem;}
+.gear-type-name{font-family:var(--sans);font-weight:700;font-size:1.05rem;margin-bottom:.3rem;}
+.gear-type-en{font-family:var(--mono);font-size:.65rem;color:var(--muted);letter-spacing:.05em;margin-bottom:.75rem;display:block;}
+.gear-type-body p{font-size:.83rem;color:var(--muted);line-height:1.7;margin-bottom:.75rem;}
+.gear-tag{display:inline-block;font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;padding:.2rem .6rem;border:1px solid var(--border);color:var(--muted);margin-right:.35rem;margin-bottom:.35rem;}
+
+/* CAMS */
+#cams{background:var(--surface);}
+.cam-intro-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;margin-bottom:4rem;}
+.cam-text p{font-size:.92rem;color:var(--muted);line-height:1.85;margin-bottom:1rem;}
+.cam-text h3{font-family:var(--sans);font-weight:700;font-size:1.35rem;letter-spacing:-.02em;margin-bottom:1rem;margin-top:2.5rem;}
+.cam-text h3:first-child{margin-top:0;}
+.cam-term-box{background:var(--bg);border:1px solid var(--border);padding:1.5rem;margin-top:1.5rem;}
+.cam-term-box h4{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;color:var(--accent2);text-transform:uppercase;margin-bottom:1rem;}
+.cam-term-list{list-style:none;display:flex;flex-direction:column;gap:.6rem;}
+.cam-term-list li{font-size:.85rem;color:var(--muted);line-height:1.65;padding-left:1.2rem;position:relative;}
+.cam-term-list li::before{content:'·';position:absolute;left:.2rem;color:var(--accent);}
+.cam-term-list li strong{color:var(--text);font-family:var(--mono);font-size:.8rem;}
+.cam-canvas-wrap{background:var(--bg);border:1px solid var(--border);}
+canvas#camCanvas{display:block;width:100%;height:auto;}
+.cam-disp-wrap{background:var(--bg);border:1px solid var(--border);border-top:none;padding-bottom:.75rem;}
+canvas#dispCanvas{display:block;width:100%;height:auto;}
+.cam-diagram-note{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;color:var(--muted);text-align:center;padding:.6rem;text-transform:uppercase;}
+
+.cam-follower-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:3rem;}
+.cam-follower-card{background:var(--bg);border:1px solid var(--border);padding:1.5rem;text-align:center;}
+.cam-follower-icon{font-size:2rem;margin-bottom:.75rem;display:block;}
+.cam-follower-name{font-family:var(--sans);font-weight:700;font-size:.9rem;margin-bottom:.3rem;}
+.cam-follower-en{font-family:var(--mono);font-size:.62rem;color:var(--muted);letter-spacing:.05em;margin-bottom:.6rem;display:block;}
+.cam-follower-card p{font-size:.78rem;color:var(--muted);line-height:1.65;}
+
+.cam-types-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.cam-type-card{background:var(--bg);border:1px solid var(--border);overflow:hidden;transition:border-color .3s;}
+.cam-type-card:hover{border-color:var(--accent);}
+.cam-type-img{height:160px;background:#111;}
+.cam-type-img img{width:100%;height:100%;object-fit:contain;padding:.75rem;}
+.cam-type-body{padding:1.5rem;}
+.cam-type-name{font-family:var(--sans);font-weight:700;font-size:1rem;margin-bottom:.3rem;}
+.cam-type-seq{font-family:var(--mono);font-size:.65rem;color:var(--accent);letter-spacing:.1em;margin-bottom:.75rem;display:block;}
+.cam-type-body p{font-size:.83rem;color:var(--muted);line-height:1.7;}
+
+/* BASICS / FOUR-BAR */
+#basics{background:var(--bg);}
+.basics-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+.basics-text h3{font-family:var(--sans);font-weight:700;font-size:1.35rem;margin-bottom:1rem;letter-spacing:-.02em;}
+.basics-text h3:not(:first-child){margin-top:2.5rem;}
+.basics-text p{font-size:.92rem;color:var(--muted);line-height:1.85;margin-bottom:1rem;}
+.key-term{color:var(--accent2);font-weight:500;font-style:italic;}
+.grashof-box{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent2);padding:1.5rem;margin:1.5rem 0;}
+.grashof-box .formula{font-family:var(--mono);font-size:1rem;color:var(--accent2);display:block;margin-bottom:.75rem;}
+.grashof-box p{font-size:.85rem;color:var(--muted);line-height:1.75;margin-bottom:0;}
+.diagram-box{background:var(--surface);border:1px solid var(--border);padding:2.5rem;}
+.diagram-box svg{width:100%;height:auto;display:block;}
+.diagram-caption{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;color:var(--muted);text-align:center;margin-top:1.2rem;text-transform:uppercase;}
+.grashof-table{width:100%;border-collapse:collapse;margin-top:3rem;font-size:.85rem;}
+.grashof-table thead tr{border-bottom:2px solid var(--accent);}
+.grashof-table th{font-family:var(--mono);font-size:.65rem;letter-spacing:.15em;color:var(--accent);text-transform:uppercase;padding:.75rem 1rem;text-align:left;}
+.grashof-table td{padding:.85rem 1rem;border-bottom:1px solid var(--border);color:var(--muted);vertical-align:top;line-height:1.6;}
+.grashof-table td:first-child{font-family:var(--mono);font-size:.8rem;color:var(--text);}
+.grashof-table td em{color:var(--accent);font-style:normal;}
+.grashof-table tr:last-child td{border-bottom:none;}
+
+/* SIMULATOR */
+#simulator{background:var(--surface);}
+.sim-layout{display:grid;grid-template-columns:1fr 340px;gap:2.5rem;align-items:start;}
+.sim-canvas-wrap{background:var(--bg);border:1px solid var(--border);}
+canvas#fourbarCanvas{display:block;width:100%;height:auto;}
+.sim-controls{background:var(--bg);border:1px solid var(--border);padding:2rem;}
+.sim-controls h4{font-family:var(--sans);font-weight:700;font-size:1rem;margin-bottom:1.5rem;}
+.ctrl-group{margin-bottom:1.5rem;}
+.ctrl-label{font-family:var(--mono);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;}
+.ctrl-label span{color:var(--accent2);font-size:.75rem;}
+input[type=range]{width:100%;-webkit-appearance:none;height:3px;background:var(--border);border-radius:2px;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer;}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);cursor:pointer;border:none;}
+.sim-status{font-family:var(--mono);font-size:.72rem;padding:.75rem 1rem;background:var(--surface2);border:1px solid var(--border);margin-top:1.5rem;line-height:1.8;}
+.status-ok{color:var(--green);}.status-warn{color:var(--accent2);}.status-err{color:var(--accent);}
+.sim-legend{display:flex;flex-direction:column;gap:.5rem;margin-top:1.5rem;}
+.sim-legend-item{display:flex;align-items:center;gap:.75rem;font-family:var(--mono);font-size:.65rem;color:var(--muted);}
+.sim-legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+.sim-btn-row{display:flex;gap:.75rem;margin-top:1.5rem;}
+.sim-btn{font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:.6rem 1rem;border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;transition:all .2s;flex:1;}
+.sim-btn:hover,.sim-btn.active{border-color:var(--accent);color:var(--accent);}
+.sim-tip{font-family:var(--mono);font-size:.65rem;color:var(--muted);line-height:1.7;margin-top:1.5rem;padding:.75rem;border:1px solid var(--border);}
+
+/* MECHANISMS */
+#mechanisms{background:var(--bg);}
+.mech-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.mech-card{background:var(--surface);border:1px solid var(--border);overflow:hidden;transition:border-color .3s;}
+.mech-card:hover{border-color:var(--accent);}
+.mech-card-body{padding:1.5rem;}
+.mech-card-num{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;margin-bottom:.6rem;}
+.mech-card h3{font-family:var(--sans);font-weight:700;font-size:1.05rem;margin-bottom:.35rem;}
+.mech-card-en{font-family:var(--mono);font-size:.65rem;color:var(--muted);letter-spacing:.05em;margin-bottom:1rem;display:block;}
+.mech-io{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap;}
+.io-in{font-family:var(--mono);font-size:.62rem;letter-spacing:.05em;padding:.2rem .6rem;background:rgba(240,90,40,.15);color:var(--accent);}
+.io-out{font-family:var(--mono);font-size:.62rem;letter-spacing:.05em;padding:.2rem .6rem;background:rgba(63,182,139,.1);color:var(--green);}
+.io-arrow{color:var(--muted);font-size:.7rem;}
+.mech-card-examples{font-size:.82rem;color:var(--muted);line-height:1.7;}
+.mech-image-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem;}
+.mech-image-row .img-block{height:200px;}
+.mech-image-row .img-block img{object-fit:contain;background:#111;padding:1rem;}
+.thang-section{background:var(--surface);border:1px solid var(--border);padding:3rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;margin-top:3rem;}
+.thang-section h3{font-family:var(--sans);font-weight:800;font-size:1.4rem;margin-bottom:1rem;}
+.thang-section p{font-size:.9rem;color:var(--muted);line-height:1.85;margin-bottom:1.2rem;}
+
+/* MACHINES */
+#machines{background:var(--surface);}
+.machine-row{display:grid;grid-template-columns:160px 1fr 160px;gap:3rem;padding:3rem 0;border-bottom:1px solid var(--border);align-items:start;}
+.machine-row:last-child{border-bottom:none;}
+.machine-num{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;padding-top:.4rem;}
+.machine-row h3{font-family:var(--sans);font-weight:800;font-size:1.6rem;letter-spacing:-.02em;margin-bottom:1rem;}
+.machine-row p{font-size:.9rem;color:var(--muted);line-height:1.85;}
+.machine-mech-tag{display:flex;flex-direction:column;gap:.5rem;padding-top:.4rem;}
+.mmt{font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;padding:.35rem .75rem;border:1px solid var(--accent);color:var(--accent);text-align:center;}
+.machine-img{width:100%;height:160px;object-fit:contain;border:1px solid var(--border);display:block;margin-top:1.2rem;background:#111;padding:.5rem;}
+
+/* ROBOTS */
+#robots{background:var(--bg);}
+.robots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.robot-card{background:var(--surface);border:1px solid var(--border);padding:2.5rem;position:relative;transition:border-color .3s;}
+.robot-card:hover{border-color:rgba(240,90,40,.5);}
+.robot-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),transparent);}
+.robot-card-num{font-family:var(--mono);font-size:.62rem;letter-spacing:.25em;color:var(--muted);text-transform:uppercase;margin-bottom:1.5rem;}
+.robot-card h3{font-family:var(--sans);font-weight:800;font-size:1.3rem;letter-spacing:-.02em;margin-bottom:1rem;line-height:1.2;}
+.robot-card p{font-size:.88rem;color:var(--muted);line-height:1.85;margin-bottom:1.5rem;}
+.robot-tags{display:flex;flex-wrap:wrap;gap:.4rem;}
+.rtag{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;padding:.25rem .6rem;border:1px solid var(--border);color:var(--muted);}
+
+/* TOOLS */
+#tools{background:var(--surface);}
+.tools-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:4rem;}
+.tool-card{background:var(--bg);border:1px solid var(--border);padding:2.5rem;transition:border-color .3s;}
+.tool-card:hover{border-color:rgba(240,90,40,.4);}
+.tool-icon{width:44px;height:44px;margin-bottom:1.5rem;}
+.tool-card h3{font-family:var(--sans);font-weight:700;font-size:1.15rem;margin-bottom:.5rem;}
+.tool-purpose{font-family:var(--mono);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem;display:block;}
+.tool-card p{font-size:.87rem;color:var(--muted);line-height:1.8;margin-bottom:1.2rem;}
+.tutorial-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:3rem;}
+.tab-btn{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;padding:.85rem 2rem;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;transition:all .2s;margin-bottom:-1px;}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+.tutorial-layout{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+.tutorial-steps{display:flex;flex-direction:column;gap:0;}
+.tutorial-step{display:grid;grid-template-columns:36px 1fr;gap:1.25rem;padding:1.5rem 0;border-bottom:1px solid var(--border);}
+.tutorial-step:last-child{border-bottom:none;}
+.step-num{font-family:var(--mono);font-size:.72rem;color:var(--accent);font-weight:600;padding-top:.15rem;}
+.step-body h4{font-family:var(--sans);font-weight:700;font-size:.95rem;margin-bottom:.4rem;}
+.step-body p{font-size:.85rem;color:var(--muted);line-height:1.75;}
+.step-body code{font-family:var(--mono);font-size:.8rem;background:var(--surface2);padding:.15rem .5rem;color:var(--accent2);}
+.tutorial-links{display:flex;flex-direction:column;gap:.75rem;margin-top:1.5rem;}
+.tutorial-link-item{display:flex;align-items:center;gap:1rem;padding:.85rem 1.25rem;background:var(--surface);border:1px solid var(--border);text-decoration:none;transition:border-color .2s;}
+.tutorial-link-item:hover{border-color:var(--blue);}
+.tl-title{font-family:var(--sans);font-weight:600;font-size:.9rem;color:var(--text);display:block;}
+.tl-url{font-family:var(--mono);font-size:.65rem;color:var(--blue);letter-spacing:.05em;}
+.kmoddl-banner{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--green);padding:3rem;margin-top:3rem;display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:center;}
+.kmoddl-banner h3{font-family:var(--sans);font-weight:700;font-size:1.2rem;margin-bottom:.75rem;}
+.kmoddl-banner p{font-size:.88rem;color:var(--muted);line-height:1.8;}
+.kmoddl-btn{font-family:var(--mono);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;color:var(--bg);background:var(--green);padding:.85rem 2rem;display:inline-block;transition:background .2s;white-space:nowrap;}
+.kmoddl-btn:hover{background:#4dd4a0;}
+
+/* SELFSTUDY */
+#selfstudy{background:var(--bg);}
+.study-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;}
+.study-card{background:var(--surface);border:1px solid var(--border);padding:2.5rem;transition:border-color .3s;}
+.study-card:hover{border-color:var(--accent2);}
+.study-card-level{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;margin-bottom:1rem;}
+.l0{color:var(--green);}.l1{color:var(--blue);}.l2{color:var(--accent2);}.l3{color:var(--accent);}
+.study-card h3{font-family:var(--sans);font-weight:700;font-size:1.1rem;margin-bottom:.8rem;}
+.study-card p{font-size:.87rem;color:var(--muted);line-height:1.8;margin-bottom:1.2rem;}
+.study-links{display:flex;flex-direction:column;gap:.5rem;}
+.study-link{font-family:var(--mono);font-size:.7rem;color:var(--blue);text-decoration:none;letter-spacing:.05em;display:flex;align-items:center;gap:.5rem;transition:color .2s;border-bottom:1px solid rgba(74,158,255,.15);padding-bottom:.4rem;}
+.study-link:hover{color:var(--text);}
+.study-link::before{content:'→';font-size:.65rem;color:var(--accent);}
+
+/* REFERENCES */
+#references{background:var(--surface);}
+.refs-list{display:flex;flex-direction:column;gap:0;}
+.ref-item{display:grid;grid-template-columns:48px 1fr;gap:1.5rem;padding:1.5rem 0;border-bottom:1px solid var(--border);align-items:baseline;}
+.ref-item:last-child{border-bottom:none;}
+.ref-num{font-family:var(--mono);font-size:.75rem;color:var(--accent2);font-weight:600;text-align:right;}
+.ref-body{font-size:.85rem;color:var(--muted);line-height:1.75;}
+.ref-body .ref-title{color:var(--text);font-style:italic;}
+.ref-body a{color:var(--blue);text-decoration:none;font-family:var(--mono);font-size:.72rem;}
+.ref-body a:hover{color:var(--text);}
+
+/* FOOTER */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:4rem 6rem;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:4rem;position:relative;z-index:1;}
+.footer-brand{font-family:var(--sans);font-weight:800;font-size:1.5rem;letter-spacing:-.02em;margin-bottom:1rem;color:var(--accent);}
+.footer-desc{font-size:.85rem;color:var(--muted);line-height:1.8;}
+footer h4{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:1.2rem;}
+footer ul{list-style:none;display:flex;flex-direction:column;gap:.6rem;}
+footer ul li a{font-size:.85rem;color:var(--muted);text-decoration:none;transition:color .2s;}
+footer ul li a:hover{color:var(--text);}
+
+/* RESPONSIVE */
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;}.hero-right{display:none;}.hero-left{padding:6rem 2rem 4rem;}
+  .history-layout,.gear-intro-layout,.cam-intro-layout,.basics-layout,.tutorial-layout,.thang-section,.sim-layout{grid-template-columns:1fr;}
+  .concepts-grid,.robots-grid,.tools-grid,.study-grid,.gear-types-grid,.cam-types-grid{grid-template-columns:1fr 1fr;}
+  .mech-cards,.mech-image-row,.history-img-grid{grid-template-columns:1fr 1fr;}
+  .cam-follower-grid{grid-template-columns:repeat(2,1fr);}
+  .machine-row{grid-template-columns:1fr;gap:1rem;}
+  .kmoddl-banner{grid-template-columns:1fr;}
+  .section-inner{padding:4rem 2rem;}
+  nav{padding:0 1.5rem;}.nav-links{display:none;}.hamburger{display:flex;}
+  footer{grid-template-columns:1fr 1fr;padding:3rem 2rem;gap:2.5rem;}
+  .intro-strip{padding:1.5rem 2rem;}
+  .tutorial-tabs{overflow-x:auto;}
+}
+@media(max-width:600px){
+  .mech-cards,.mech-image-row,.history-img-grid,.gear-types-grid,.cam-types-grid,.concepts-grid,.robots-grid,.tools-grid,.study-grid,.cam-follower-grid{grid-template-columns:1fr;}
+  footer{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand">機構學</div>
+  <ul class="nav-links">
+    <li><a href="#history">歷史</a></li>
+    <li><a href="#concepts">基本概念</a></li>
+    <li><a href="#gears">齒輪</a></li>
+    <li><a href="#cams">凸輪</a></li>
+    <li><a href="#basics">四連桿</a></li>
+    <li><a href="#simulator">模擬器</a></li>
+    <li><a href="#mechanisms">六大機構</a></li>
+    <li><a href="#machines">機械實例</a></li>
+    <li><a href="#robots">機器人</a></li>
+    <li><a href="#tools">工具教學</a></li>
+    <li><a href="#references">參考資料</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="選單"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#history">歷史</a>
+  <a href="#concepts">基本概念</a>
+  <a href="#gears">齒輪</a>
+  <a href="#cams">凸輪</a>
+  <a href="#basics">四連桿</a>
+  <a href="#simulator">模擬器</a>
+  <a href="#mechanisms">六大機構</a>
+  <a href="#machines">機械實例</a>
+  <a href="#robots">機器人</a>
+  <a href="#tools">工具教學</a>
+  <a href="#references">參考資料</a>
+</div>
+
+<!-- HERO -->
+<section style="padding-top:0;">
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-kicker">機械工程 · 運動學</div>
+    <h1 class="hero-title">機械如何<br><span class="accent">運動？</span></h1>
+    <p class="hero-desc">齒輪轉動、凸輪推動閥門、活塞往復、機器手臂伸展——這些看似複雜的動作，其實都由少數幾種「基本機構」組合而成。機構學就是理解這件事的語言。</p>
+    <div class="hero-stats">
+      <div><span class="hero-stat-n">6</span><span class="hero-stat-l">核心機構</span></div>
+      <div><span class="hero-stat-n">230<span style="font-size:1.2rem;color:var(--muted)">+</span></span><span class="hero-stat-l">歷史模型</span></div>
+      <div><span class="hero-stat-n">∞</span><span class="hero-stat-l">設計可能</span></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <svg class="gear-canvas" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg">
+      <g class="gr1"><circle cx="230" cy="260" r="80" fill="none" stroke="rgba(240,90,40,.2)" stroke-width="2"/><circle cx="230" cy="260" r="65" fill="rgba(18,21,26,.95)" stroke="rgba(240,90,40,.3)" stroke-width="1.5"/><circle cx="230" cy="260" r="12" fill="none" stroke="rgba(240,90,40,.6)" stroke-width="2"/><line x1="230" y1="248" x2="230" y2="272" stroke="rgba(240,90,40,.3)" stroke-width="1"/><line x1="218" y1="260" x2="242" y2="260" stroke="rgba(240,90,40,.3)" stroke-width="1"/><g fill="rgba(240,90,40,.5)"><rect x="225" y="178" width="10" height="16" rx="1.5"/><rect x="225" y="178" width="10" height="16" rx="1.5" transform="rotate(30,230,260)"/><rect x="225" y="178" width="10" height="16" rx="1.5" transform="rotate(60,230,260)"/><rect x="225" y="178" width="10" height="16" rx="1.5" transform="rotate(90,230,260)"/><rect x="225" y="178" width="10" height="16" rx="1.5" transform="rotate(120,230,260)"/><rect x="225" y="178" width="10" height="16" rx="1.5" transform="rotate(150,230,260)"/><rect x="225" y="178" width="10" height="16" rx="1.5" transform="rotate(180,230,260)"/><rect x="225" y="178" width="10" height="16" rx="1.5" transform="rotate(210,230,260)"/><rect x="225" y="178" width="10" height="16" rx="1.5" transform="rotate(240,230,260)"/><rect x="225" y="178" width="10" height="16" rx="1.5" transform="rotate(270,230,260)"/><rect x="225" y="178" width="10" height="16" rx="1.5" transform="rotate(300,230,260)"/><rect x="225" y="178" width="10" height="16" rx="1.5" transform="rotate(330,230,260)"/></g></g>
+      <g class="gr2"><circle cx="370" cy="190" r="45" fill="none" stroke="rgba(240,90,40,.15)" stroke-width="1.5"/><circle cx="370" cy="190" r="36" fill="rgba(18,21,26,.95)" stroke="rgba(240,90,40,.2)" stroke-width="1"/><circle cx="370" cy="190" r="7" fill="none" stroke="rgba(240,90,40,.4)" stroke-width="1.5"/><g fill="rgba(240,90,40,.35)"><rect x="366" y="147" width="8" height="12" rx="1"/><rect x="366" y="147" width="8" height="12" rx="1" transform="rotate(45,370,190)"/><rect x="366" y="147" width="8" height="12" rx="1" transform="rotate(90,370,190)"/><rect x="366" y="147" width="8" height="12" rx="1" transform="rotate(135,370,190)"/><rect x="366" y="147" width="8" height="12" rx="1" transform="rotate(180,370,190)"/><rect x="366" y="147" width="8" height="12" rx="1" transform="rotate(225,370,190)"/><rect x="366" y="147" width="8" height="12" rx="1" transform="rotate(270,370,190)"/><rect x="366" y="147" width="8" height="12" rx="1" transform="rotate(315,370,190)"/></g></g>
+      <g class="gr3"><circle cx="130" cy="370" r="58" fill="none" stroke="rgba(240,90,40,.12)" stroke-width="1.5"/><circle cx="130" cy="370" r="47" fill="rgba(18,21,26,.95)" stroke="rgba(240,90,40,.18)" stroke-width="1"/><circle cx="130" cy="370" r="9" fill="none" stroke="rgba(240,90,40,.35)" stroke-width="1.5"/><line x1="130" y1="361" x2="130" y2="379" stroke="rgba(240,90,40,.2)" stroke-width="1"/><line x1="121" y1="370" x2="139" y2="370" stroke="rgba(240,90,40,.2)" stroke-width="1"/><g fill="rgba(240,90,40,.28)"><rect x="126" y="321" width="8" height="12" rx="1"/><rect x="126" y="321" width="8" height="12" rx="1" transform="rotate(36,130,370)"/><rect x="126" y="321" width="8" height="12" rx="1" transform="rotate(72,130,370)"/><rect x="126" y="321" width="8" height="12" rx="1" transform="rotate(108,130,370)"/><rect x="126" y="321" width="8" height="12" rx="1" transform="rotate(144,130,370)"/><rect x="126" y="321" width="8" height="12" rx="1" transform="rotate(180,130,370)"/><rect x="126" y="321" width="8" height="12" rx="1" transform="rotate(216,130,370)"/><rect x="126" y="321" width="8" height="12" rx="1" transform="rotate(252,130,370)"/><rect x="126" y="321" width="8" height="12" rx="1" transform="rotate(288,130,370)"/><rect x="126" y="321" width="8" height="12" rx="1" transform="rotate(324,130,370)"/></g></g>
+      <g transform="translate(350,340)"><line x1="20" y1="57" x2="155" y2="57" stroke="rgba(255,255,255,.08)" stroke-width="1.5"/><circle cx="20" cy="40" r="4" fill="rgba(240,90,40,.7)"/><g class="crank-anim"><line x1="20" y1="40" x2="20" y2="18" stroke="rgba(240,90,40,.6)" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="18" r="3.5" fill="rgba(240,90,40,.9)"/></g><line x1="20" y1="18" x2="95" y2="40" stroke="rgba(232,228,219,.3)" stroke-width="2" stroke-linecap="round"/><g class="piston-anim"><rect x="93" y="30" width="32" height="20" rx="2.5" fill="none" stroke="rgba(240,90,40,.45)" stroke-width="1.5"/><line x1="125" y1="40" x2="148" y2="40" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/></g><text x="5" y="72" font-family="monospace" font-size="7" fill="rgba(255,255,255,.15)" letter-spacing="1">SLIDER-CRANK</text></g>
+    </svg>
+    <div class="hero-diagram-label">機構動態示意 · Kinematics Diagram</div>
+  </div>
+</div>
+</section>
+
+<div class="intro-strip">
+  <p>機構學研究的是「運動如何傳遞」：旋轉的速度與方向可以改變（齒輪），等速旋轉可以變成任意規劃的往復（凸輪），連桿的長度決定機構的型態。<em>掌握這些原理，你就能看懂並設計任何機械。</em></p>
+</div>
+
+<!-- HISTORY -->
+<section id="history">
+<div class="section-inner">
+  <div class="section-label reveal">Historical Context</div>
+  <h2 class="section-title reveal">機構學是怎麼<br>發展起來的？</h2>
+  <div class="history-layout">
+    <div class="history-timeline reveal">
+
+      <div class="history-event">
+        <div class="h-year">紀元前</div>
+        <div class="h-body">
+          <span class="h-person">中國 · 希臘 · 印度</span>
+          <h3>最早的齒輪</h3>
+          <p>目前已知最早的人造齒輪出土於中國，可追溯到約西元前 4 世紀（戰國時代）。希臘人約在西元前 3 世紀也發展出木製齒輪。西元 1 世紀的<strong style="color:var(--text)">安提基特拉機械（Antikythera mechanism）</strong>是迄今最複雜的古代齒輪裝置，用於推算天體位置，展示了古代對齒輪傳動的深刻理解。<sup class="ref">[19]</sup></p>
+        </div>
+      </div>
+
+      <div class="history-event">
+        <div class="h-year">13–14 世紀</div>
+        <div class="h-body">
+          <span class="h-person">印度 · 中世紀工匠</span>
+          <h3>蝸輪蝸桿的發明</h3>
+          <p>蝸輪蝸桿機構最早在印度出現，用於棉花壓榨機（roller cotton gin）。其關鍵特性——蝸桿可驅動蝸輪，但蝸輪因螺旋角太淺而無法反轉驅動蝸桿（自鎖）——使它成為升降與輸送機械的理想選擇。<sup class="ref">[21]</sup></p>
+        </div>
+      </div>
+
+      <div class="history-event">
+        <div class="h-year">1588</div>
+        <div class="h-body">
+          <span class="h-person">Agostino Ramelli · 義大利</span>
+          <h3>《精巧機械圖鑑》</h3>
+          <p>Ramelli 出版圖集，以精美插圖系統記錄水車、起重、幫浦等百餘種機構，是機構知識從「工匠秘技」走向「公開紀錄」的里程碑。<sup class="ref">[2]</sup></p>
+        </div>
+      </div>
+
+      <div class="history-event">
+        <div class="h-year">1784</div>
+        <div class="h-body">
+          <span class="h-person">James Watt · 蒸汽時代</span>
+          <h3>瓦特連桿與工業革命</h3>
+          <p>Watt 設計出<strong style="color:var(--text)">瓦特連桿（Watt's Linkage）</strong>——讓搖臂的弧形運動近似直線，實現雙向作功，蒸汽機效率倍增。這個四連桿設計至今仍出現在汽車後懸吊系統裡。<sup class="ref">[3]</sup></p>
+        </div>
+      </div>
+
+      <div class="history-event">
+        <div class="h-year">1837</div>
+        <div class="h-body">
+          <span class="h-person">Robert Willis · 英國劍橋大學</span>
+          <h3>機構學成為獨立學科</h3>
+          <p>Willis 出版《Principles of Mechanisms》，首次以科學分類法整理各類機構，奠定機構學的學科基礎，深刻影響了後來的 Reuleaux。<sup class="ref">[4]</sup></p>
+        </div>
+      </div>
+
+      <div class="history-event">
+        <div class="h-year">1853–</div>
+        <div class="h-body">
+          <span class="h-person">Pafnuty Chebyshev · 俄羅斯</span>
+          <h3>車比雪夫連桿</h3>
+          <p>數學家 Chebyshev 設計出連桿點軌跡能高精度近似直線的四連桿，並首次用數學公式分析連桿誤差，開啟了機構「計算合成」的先河。<sup class="ref">[5]</sup></p>
+        </div>
+      </div>
+
+      <div class="history-event">
+        <div class="h-year">1875</div>
+        <div class="h-body">
+          <span class="h-person">Franz Reuleaux · 柏林皇家工業學院</span>
+          <h3>機構學的奠基之作</h3>
+          <p>Reuleaux 出版《Theoretische Kinematik》，首次嚴格定義<strong style="color:var(--text)">運動副（kinematic pair）、運動鏈（kinematic chain）</strong>，並親手製作 230 件金屬教學模型，現由 Cornell 大學典藏（KMODDL）。<sup class="ref">[6,7]</sup></p>
+        </div>
+      </div>
+
+      <div class="history-event">
+        <div class="h-year">1888</div>
+        <div class="h-body">
+          <span class="h-person">Charles Hoot · 工業化齒輪製造</span>
+          <h3>漸開線齒輪標準化</h3>
+          <p>19 世紀末，<strong style="color:var(--text)">漸開線齒形（involute profile）</strong>被廣泛採用並逐步標準化。漸開線能確保咬合時的瞬時速比恆定（齒輪嚙合定律），且對中心距偏差不敏感——現代幾乎所有精密齒輪都採用漸開線齒形。<sup class="ref">[19]</sup></p>
+        </div>
+      </div>
+
+      <div class="history-event">
+        <div class="h-year">1959</div>
+        <div class="h-body">
+          <span class="h-person">Freudenstein &amp; Sandor</span>
+          <h3>電腦輔助機構設計</h3>
+          <p>率先用電腦解算連桿方程式，從此設計機構不再需要繁瑣的圖解法。這直接促成現代機器人手臂逆運動學（IK）算法的誕生。<sup class="ref">[8]</sup></p>
+        </div>
+      </div>
+
+      <div class="history-event">
+        <div class="h-year">今日</div>
+        <div class="h-body">
+          <span class="h-person">機器人 · 仿生機構 · 軟體機器人</span>
+          <h3>老原理，新應用</h3>
+          <p>從工業臂到手術機器人、外骨骼、仿生腿，四連桿、滑塊曲柄、凸輪、齒輪仍是核心設計語彙。MotionGen、OnShape 讓你在瀏覽器裡就能設計並模擬機構。</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="history-feature reveal">
+      <div class="h-quote-card">
+        <blockquote>「機器是由具有確定形狀的固體所組成的組合體，以特定的方式排列，使得機械力可以透過它們來完成特定的工作。」</blockquote>
+        <cite>— Franz Reuleaux, Theoretische Kinematik, 1875</cite>
+      </div>
+
+      <div class="history-img-grid">
+        <div class="img-block" style="height:190px;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Antikythera_model_front_panel_Mogi_Vicentini_2007.JPG/320px-Antikythera_model_front_panel_Mogi_Vicentini_2007.JPG" alt="Antikythera mechanism model" loading="lazy" style="object-fit:cover;">
+          <div class="img-caption">安提基特拉機械模型 (約 BC 100) · Wikimedia</div>
+        </div>
+        <div class="img-block" style="height:190px;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Watts_Parallel_Linkage.gif/280px-Watts_Parallel_Linkage.gif" alt="Watt parallel motion linkage animation" loading="lazy" style="object-fit:contain;background:#111;padding:.75rem;">
+          <div class="img-caption">瓦特連桿動態示意 · Wikimedia Commons</div>
+        </div>
+        <div class="img-block" style="height:190px;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Peaucellier_linkage_animation.gif/300px-Peaucellier_linkage_animation.gif" alt="Peaucellier straight line linkage" loading="lazy" style="object-fit:contain;background:#111;padding:.75rem;">
+          <div class="img-caption">Peaucellier 精確直線機構 · Wikimedia</div>
+        </div>
+        <div class="img-block" style="height:190px;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Epicyclic_gear_ratios.gif/200px-Epicyclic_gear_ratios.gif" alt="Planetary gear animation" loading="lazy" style="object-fit:contain;background:#111;padding:.75rem;">
+          <div class="img-caption">行星齒輪組動態示意 · Wikimedia</div>
+        </div>
+      </div>
+
+      <div class="h-resource-card" style="margin-top:1.5rem;">
+        <h4>Cornell KMODDL 數位典藏</h4>
+        <p>Reuleaux 230 件精密金屬機構教學模型，現已全部數位化並附動態影片。<sup class="ref">[7]</sup></p>
+        <a href="https://digital.library.cornell.edu/collections/kmoddl" target="_blank" class="ext-link">→ digital.library.cornell.edu/collections/kmoddl</a>
+      </div>
+      <div class="h-resource-card">
+        <h4>507 Mechanical Movements</h4>
+        <p>19 世紀機構百科，收錄 507 種基本機械運動，現附互動動畫。</p>
+        <a href="http://507movements.com" target="_blank" class="ext-link">→ 507movements.com</a>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CONCEPTS -->
+<section id="concepts">
+<div class="section-inner">
+  <div class="section-label reveal">Core Concepts</div>
+  <h2 class="section-title reveal">四個關鍵詞，<br>搞懂機構學</h2>
+  <p style="font-size:1.05rem;color:var(--muted);max-width:640px;line-height:1.85;margin-bottom:4rem;" class="reveal">學機構學之前，先把這四個概念釐清。後面遇到任何機構，都能用這四個詞來分析。</p>
+  <div class="concepts-grid reveal">
+    <div class="concept-card" data-letter="M"><span class="concept-en">Machine</span><h3>機械</h3><p>能輸入能量、透過機構傳遞運動、對外輸出有用工作的系統。<sup class="ref">[4]</sup></p><div class="concept-box">引擎 → 燃料 ▸ 轉動輸出<br>馬達 + 齒輪 → 扭矩放大<br>機器臂 → 精確空間定位</div></div>
+    <div class="concept-card" data-letter="K"><span class="concept-en">Mechanism</span><h3>機構</h3><p>機械裡專門負責「傳遞和轉換運動」的部分，由多個剛性構件透過接頭（joints）連接形成運動鏈。機構不在乎力的大小，只在乎「動作怎麼傳遞」。<sup class="ref">[4,6]</sup></p><div class="concept-box">轉動 ↔ 直線 ↔ 擺動 ↔ 間歇</div></div>
+    <div class="concept-card" data-letter="J"><span class="concept-en">Joint</span><h3>接頭</h3><p>兩個構件之間的連接方式，決定兩者能發生什麼樣的相對運動。就像門和門框之間的鉸鏈——只能旋轉，不能滑動。</p><div class="concept-box">旋轉接頭 (R)：只能旋轉 → 門鉸鏈、軸承<br>滑動接頭 (P)：只能平移 → 滑軌、汽缸活塞</div><div class="concept-note">學術用語：Kinematic Pair（運動副）。面接觸稱「低對（lower pair）」，點/線接觸稱「高對（higher pair）」，如齒輪齒面、凸輪與從動件。<sup class="ref">[6]</sup></div></div>
+    <div class="concept-card" data-letter="F"><span class="concept-en">Degree of Freedom</span><h3>自由度 DOF</h3><p>機構裡「獨立可控的運動」有幾個？一個平面剛體本來有 3 個自由度（x、y、旋轉角θ），加入每一個接頭約束，就少一個自由度。<sup class="ref">[9]</sup></p><div class="concept-box">DOF = 1：輸入一個動作，輸出確定 ✓<br>DOF = 0：完全固定，這是結構 ✗</div><div class="dof-chips"><span class="dof-chip lit">移動 x</span><span class="dof-chip lit">移動 y</span><span class="dof-chip lit">旋轉 θ</span><span style="font-family:var(--mono);font-size:.65rem;color:var(--muted);align-self:center;margin-left:.5rem;">平面剛體 = 3 DOF</span></div></div>
+  </div>
+</div>
+</section>
+
+<!-- GEARS -->
+<section id="gears">
+<div class="section-inner">
+  <div class="section-label reveal">Gear Mechanisms</div>
+  <h2 class="section-title reveal">齒輪：<br>改變速度與扭矩</h2>
+
+  <div class="gear-intro-layout reveal">
+    <div class="gear-intro-text">
+      <h3>齒輪是什麼？</h3>
+      <p>齒輪是透過「齒齒咬合」傳遞力與運動的機構元件，兩個齒輪的齒面屬於<strong style="color:var(--text)">高對（higher pair）</strong>——接觸是在齒面上移動的線/點接觸。和皮帶、鏈條不同，齒輪是<strong style="color:var(--text)">正驅動（positive drive）</strong>——不會打滑，傳遞比例精確。</p>
+      <p>齒輪最重要的功能是：<strong style="color:var(--text)">改變轉速、改變扭矩、改變轉軸方向。</strong>這三件事是透過齒輪的「齒數比」精確控制的。</p>
+
+      <h3>速比公式</h3>
+      <div class="gear-formula-box">
+        <span class="f-eq">i = N₂ / N₁ = ω₁ / ω₂</span>
+        <p><strong>i</strong> = 速比（gear ratio）　<strong>N₁</strong> = 主動齒輪齒數　<strong>N₂</strong> = 從動齒輪齒數<br>
+        <strong>ω₁, ω₂</strong> = 主動、從動角速度。功率守恆（忽略摩擦）：<strong>T₁ × ω₁ = T₂ × ω₂</strong></p>
+      </div>
+      <ul class="gear-rules">
+        <li><strong>減速增矩</strong>：小齒輪驅動大齒輪 → 輸出轉速降低，扭矩增大。例：馬達→機器人輪子。</li>
+        <li><strong>增速減矩</strong>：大齒輪驅動小齒輪 → 輸出轉速提高，扭矩減小。例：腳踏車高速檔。</li>
+        <li><strong>方向改變</strong>：外嚙合兩齒輪旋轉方向相反；內嚙合方向相同；錐齒輪可改變轉軸方向。</li>
+        <li><strong>複式齒輪列</strong>：多組齒輪串聯，可達到非常大的速比。例：鐘錶機構速比可達數千比一。</li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="img-block" style="height:240px;margin-bottom:1.5rem;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Animated_two_spur_gears_1_2.gif/320px-Animated_two_spur_gears_1_2.gif" alt="Two spur gears meshing animation" loading="lazy" style="object-fit:contain;background:#fff;padding:.5rem;">
+        <div class="img-caption">正齒輪咬合動態示意 · Wikimedia Commons</div>
+      </div>
+      <div class="img-block" style="height:240px;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Epicyclic_gear_ratios.gif/240px-Epicyclic_gear_ratios.gif" alt="Planetary gear animation" loading="lazy" style="object-fit:contain;background:#111;padding:.75rem;">
+        <div class="img-caption">行星齒輪組：三種速比 · Wikimedia Commons</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gear types -->
+  <h3 style="font-family:var(--sans);font-weight:700;font-size:1.5rem;letter-spacing:-.02em;margin-bottom:2rem;" class="reveal">六種主要齒輪類型</h3>
+  <div class="gear-types-grid reveal">
+
+    <div class="gear-type-card">
+      <div class="gear-type-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Animated_two_spur_gears_1_2.gif/200px-Animated_two_spur_gears_1_2.gif" alt="Spur gears" loading="lazy">
+      </div>
+      <div class="gear-type-body">
+        <div class="gear-type-name">正齒輪</div>
+        <span class="gear-type-en">Spur Gear · 平行軸</span>
+        <p>最常見、最簡單。齒條平行於轉軸，嚙合時有衝擊噪音，不適合高速靜音場合。是學習齒輪的起點。</p>
+        <span class="gear-tag">鐘錶</span><span class="gear-tag">工具機</span><span class="gear-tag">玩具馬達</span>
+      </div>
+    </div>
+
+    <div class="gear-type-card">
+      <div class="gear-type-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Animated_helical_gears.gif/200px-Animated_helical_gears.gif" alt="Helical gears" loading="lazy">
+      </div>
+      <div class="gear-type-body">
+        <div class="gear-type-name">斜齒輪（螺旋齒輪）</div>
+        <span class="gear-type-en">Helical Gear · 平行軸</span>
+        <p>齒條有傾斜角，齒逐漸咬合，運轉平滑安靜。幾乎所有汽車變速箱都用斜齒輪。缺點是產生軸向推力。</p>
+        <span class="gear-tag">汽車變速箱</span><span class="gear-tag">工業減速機</span>
+      </div>
+    </div>
+
+    <div class="gear-type-card">
+      <div class="gear-type-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Animated_bevel_gears.gif/200px-Animated_bevel_gears.gif" alt="Bevel gears" loading="lazy">
+      </div>
+      <div class="gear-type-body">
+        <div class="gear-type-name">錐齒輪</div>
+        <span class="gear-type-en">Bevel Gear · 相交軸 90°</span>
+        <p>錐形齒輪，用於傳動方向需要改變的場合，兩軸通常成 90° 相交。</p>
+        <span class="gear-tag">汽車差速器</span><span class="gear-tag">手搖鑽</span><span class="gear-tag">直角傳動</span>
+      </div>
+    </div>
+
+    <div class="gear-type-card">
+      <div class="gear-type-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Worm_Gear.gif/200px-Worm_Gear.gif" alt="Worm gear" loading="lazy">
+      </div>
+      <div class="gear-type-body">
+        <div class="gear-type-name">蝸輪蝸桿</div>
+        <span class="gear-type-en">Worm Gear · 非相交軸 90°</span>
+        <p>最大特點：<strong style="color:var(--text)">自鎖性</strong>——蝸桿能驅動蝸輪，但蝸輪無法反轉驅動蝸桿。速比可達 300:1 以上。</p>
+        <span class="gear-tag">升降機</span><span class="gear-tag">輸送帶</span><span class="gear-tag">機器人關節</span>
+      </div>
+    </div>
+
+    <div class="gear-type-card">
+      <div class="gear-type-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Epicyclic_gear_ratios.gif/200px-Epicyclic_gear_ratios.gif" alt="Planetary gear" loading="lazy" style="background:#111;">
+      </div>
+      <div class="gear-type-body">
+        <div class="gear-type-name">行星齒輪組</div>
+        <span class="gear-type-en">Planetary / Epicyclic Gear</span>
+        <p>由太陽齒輪、行星齒輪、環齒輪與行星架組成。固定不同元件得到不同速比，結構緊湊、扭矩密度高。<sup class="ref">[20]</sup></p>
+        <span class="gear-tag">自動變速箱</span><span class="gear-tag">電動工具</span><span class="gear-tag">工業機械臂</span>
+      </div>
+    </div>
+
+    <div class="gear-type-card">
+      <div class="gear-type-img">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Rack_and_pinion_animation.gif/200px-Rack_and_pinion_animation.gif" alt="Rack and pinion" loading="lazy" style="background:#fff;">
+      </div>
+      <div class="gear-type-body">
+        <div class="gear-type-name">齒條與小齒輪</div>
+        <span class="gear-type-en">Rack and Pinion</span>
+        <p>把無限大圓的齒輪攤平就是齒條。小齒輪旋轉→齒條直線移動，是「轉動變直線」的最簡單機構之一。</p>
+        <span class="gear-tag">汽車轉向機</span><span class="gear-tag">CNC 進給</span><span class="gear-tag">升降桌</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gear video + interactive tool -->
+  <div class="thang-section reveal" style="margin-top:3rem;">
+    <div>
+      <div class="section-label" style="margin-bottom:1rem;">影片資源</div>
+      <h3>齒輪運作原理</h3>
+      <p>這部影片以動畫說明正齒輪、斜齒輪、錐齒輪、蝸輪蝸桿的工作原理，以及各類型適合的應用場合。搭配下方的互動齒輪模擬器，可以直接操作觀察齒輪咬合。<sup class="ref">[11]</sup></p>
+      <a href="https://ciechanow.ski/gears/" target="_blank" class="ext-link" style="display:block;margin-bottom:.75rem;">→ ciechanow.ski/gears — 互動式齒輪物理詳解（強烈推薦）</a>
+      <a href="https://geargenerator.com" target="_blank" class="ext-link">→ geargenerator.com — 互動齒輪模擬器</a>
+    </div>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/csNsrUkBlx0?start=185&rel=0&modestbranding=1" allowfullscreen loading="lazy" title="Gear Train Mechanism Animation"></iframe>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CAMS -->
+<section id="cams">
+<div class="section-inner">
+  <div class="section-label reveal">Cam Mechanisms</div>
+  <h2 class="section-title reveal">凸輪：<br>把旋轉變成任意運動</h2>
+
+  <div class="cam-intro-layout reveal">
+    <div class="cam-text">
+      <h3>凸輪的核心概念</h3>
+      <p>凸輪是一種形狀特殊的旋轉構件。從動件（follower）與凸輪輪廓保持接觸，隨著凸輪旋轉，輪廓的高低起伏「強迫」從動件做出特定運動。</p>
+      <p>關鍵特點：<strong style="color:var(--text)">輸入是等速旋轉，輸出的運動曲線完全由凸輪輪廓形狀決定。</strong>設計者可以「程式化」從動件的任意運動歷程——只要把想要的位移曲線轉換成輪廓即可。</p>
+      <p>凸輪與從動件之間是點或線接觸，屬於<strong style="color:var(--text)">高對（higher pair）</strong>，這和四連桿的面接觸低對不同。<sup class="ref">[22]</sup></p>
+
+      <h3>一個旋轉週期內的三種狀態</h3>
+      <div class="cam-term-box">
+        <h4>位移程式（Motion Program）</h4>
+        <ul class="cam-term-list">
+          <li><strong>上升（Rise）</strong>：從動件向上移動，凸輪輪廓半徑增大。</li>
+          <li><strong>停駐（Dwell）</strong>：從動件靜止不動，凸輪仍在旋轉，此段輪廓為等半徑圓弧。</li>
+          <li><strong>下降（Return / Fall）</strong>：從動件回到最低位置，輪廓半徑縮小。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Cam animation -->
+    <div>
+      <div class="cam-canvas-wrap">
+        <canvas id="camCanvas" width="480" height="380"></canvas>
+      </div>
+      <div class="cam-disp-wrap">
+        <canvas id="dispCanvas" width="480" height="110"></canvas>
+        <div class="cam-diagram-note">位移圖 · 點擊畫面暫停/播放</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Follower types -->
+  <h3 style="font-family:var(--sans);font-weight:700;font-size:1.5rem;letter-spacing:-.02em;margin-bottom:2rem;" class="reveal">四種從動件類型</h3>
+  <div class="cam-follower-grid reveal">
+    <div class="cam-follower-card"><span class="cam-follower-icon">🔪</span><div class="cam-follower-name">刀口從動件</div><span class="cam-follower-en">Knife Edge</span><p>結構最簡單，磨損最快，僅用於輕載低速或教學示範。</p></div>
+    <div class="cam-follower-card"><span class="cam-follower-icon">⚪</span><div class="cam-follower-name">滾子從動件</div><span class="cam-follower-en">Roller Follower</span><p>最常用。滾動接觸，摩擦小、耐磨，適合高速重載。引擎配氣機構的標準選擇。</p></div>
+    <div class="cam-follower-card"><span class="cam-follower-icon">▬</span><div class="cam-follower-name">平面從動件</div><span class="cam-follower-en">Flat Face</span><p>接觸面積大，能承受較大側向力，結構緊湊。適合高速場合，但凸輪必須為凸形。</p></div>
+    <div class="cam-follower-card"><span class="cam-follower-icon">🔵</span><div class="cam-follower-name">球面從動件</div><span class="cam-follower-en">Spherical Face</span><p>球面接觸，對偏斜不敏感，用於有角度偏差的三維場合。</p></div>
+  </div>
+
+  <!-- Cam types -->
+  <h3 style="font-family:var(--sans);font-weight:700;font-size:1.5rem;letter-spacing:-.02em;margin-bottom:2rem;" class="reveal">三種常見凸輪輪廓</h3>
+  <div class="cam-types-grid reveal">
+    <div class="cam-type-card">
+      <div class="cam-type-img"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Nockenwelle_ani.gif/200px-Nockenwelle_ani.gif" alt="Disc cam animation" loading="lazy"></div>
+      <div class="cam-type-body">
+        <div class="cam-type-name">盤型凸輪（Plate Cam）</div>
+        <span class="cam-type-seq">上升 → 停駐 → 下降 → 停駐</span>
+        <p>最常見。平面圓盤輪廓，從動件在垂直於旋轉軸的平面內運動。引擎凸輪軸就是最典型的應用。</p>
+      </div>
+    </div>
+    <div class="cam-type-card">
+      <div class="cam-type-img"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Cylindrical_cam.gif/200px-Cylindrical_cam.gif" alt="Cylindrical cam" loading="lazy"></div>
+      <div class="cam-type-body">
+        <div class="cam-type-name">桶型凸輪（Cylindrical Cam）</div>
+        <span class="cam-type-seq">沿軸向移動</span>
+        <p>槽切在圓柱表面，從動件沿平行轉軸方向移動。適合需要大行程直線輸出的場合，常見於紡織機、換刀機構。</p>
+      </div>
+    </div>
+    <div class="cam-type-card">
+      <div class="cam-type-img"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Eccentric_cam_animation.gif/200px-Eccentric_cam_animation.gif" alt="Eccentric cam" loading="lazy"></div>
+      <div class="cam-type-body">
+        <div class="cam-type-name">偏心凸輪（Eccentric Cam）</div>
+        <span class="cam-type-seq">簡諧往復運動</span>
+        <p>把圓形圓盤的中心偏移，從動件做近似簡諧運動。最簡單的凸輪型態，常用於幫浦驅動。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cam video -->
+  <div class="thang-section reveal" style="margin-top:3rem;">
+    <div>
+      <div class="section-label" style="margin-bottom:1rem;">影片資源</div>
+      <h3>凸輪與從動件原理</h3>
+      <p>這部影片涵蓋盤型凸輪、凸輪輪廓設計、不同從動件類型的比較，以及引擎配氣凸輪的實際應用。<sup class="ref">[11]</sup></p>
+      <a href="https://www.youtube.com/@thang010146" target="_blank" class="ext-link">→ thang010146 — 3000+ 機構動畫頻道</a>
+    </div>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/csNsrUkBlx0?start=5&rel=0&modestbranding=1" allowfullscreen loading="lazy" title="Cam Follower Mechanisms"></iframe>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- BASICS: FOUR-BAR -->
+<section id="basics">
+<div class="section-inner">
+  <div class="section-label reveal">Foundation</div>
+  <h2 class="section-title reveal">四連桿：<br>最基本的連桿機構</h2>
+
+  <div class="basics-layout reveal">
+    <div class="basics-text">
+      <h3>為什麼從四連桿開始？</h3>
+      <p>平面機構裡，三根桿加三個旋轉接頭，DOF = 0，形成完全固定的三角形——這是結構，不是機構。<strong style="color:var(--text)">最簡單的可動平面閉迴路機構，就是四連桿。</strong>四根桿、四個旋轉接頭，DOF = 1。<sup class="ref">[9]</sup></p>
+
+      <h3>決定型態的兩個因素</h3>
+      <p><span class="key-term">① 連桿長度比例</span>——決定有沒有桿能做完整旋轉，由 <strong style="color:var(--text)">Grashof 定律</strong>判斷。</p>
+      <p><span class="key-term">② 固定哪根桿</span>——在滿足 Grashof 條件的前提下，固定不同的桿得到不同型態（運動鏈反轉）。</p>
+      <div class="grashof-box">
+        <span class="formula">s + l ≤ p + q</span>
+        <p><strong>s</strong> = 最短桿　<strong>l</strong> = 最長桿　<strong>p, q</strong> = 另外兩桿<br>滿足此條件時，最短桿相鄰的桿（或最短桿本身）可以做完整旋轉。<sup class="ref">[9,10]</sup></p>
+      </div>
+
+      <h3>輸入桿與輸出桿</h3>
+      <p>用<span class="key-term">輸入桿（driver）</span>和<span class="key-term">輸出桿（follower）</span>描述功能角色更清楚。能連續旋轉的輸入桿叫「曲柄（crank）」，只能擺動的輸出桿叫「搖桿（rocker）」。</p>
+    </div>
+
+    <div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 360 210" xmlns="http://www.w3.org/2000/svg">
+          <defs><style>.cr-crank{transform-origin:60px 145px;animation:gearCW 3s linear infinite;}</style><marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><polygon points="0 0, 6 3, 0 6" fill="rgba(240,90,40,.6)"/></marker></defs>
+          <line x1="40" y1="150" x2="320" y2="150" stroke="rgba(255,255,255,.12)" stroke-width="1.5"/>
+          <line x1="50" y1="150" x2="45" y2="163" stroke="rgba(255,255,255,.1)" stroke-width="1"/><line x1="68" y1="150" x2="63" y2="163" stroke="rgba(255,255,255,.1)" stroke-width="1"/><line x1="272" y1="150" x2="267" y2="163" stroke="rgba(255,255,255,.1)" stroke-width="1"/><line x1="290" y1="150" x2="285" y2="163" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+          <circle cx="60" cy="145" r="5" fill="none" stroke="var(--accent)" stroke-width="2"/><circle cx="290" cy="145" r="5" fill="none" stroke="var(--accent)" stroke-width="2"/>
+          <text x="165" y="170" font-family="monospace" font-size="9" fill="rgba(255,255,255,.18)" text-anchor="middle" letter-spacing="2">L₁ 地桿（固定）</text>
+          <g class="cr-crank"><line x1="60" y1="145" x2="60" y2="108" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/><circle cx="60" cy="108" r="4.5" fill="var(--accent)"/></g>
+          <line x1="60" y1="108" x2="245" y2="72" stroke="rgba(232,228,219,.55)" stroke-width="2.5" stroke-linecap="round"/><circle cx="245" cy="72" r="4" fill="rgba(232,228,219,.55)"/>
+          <line x1="290" y1="145" x2="245" y2="72" stroke="rgba(74,158,255,.75)" stroke-width="2.5" stroke-linecap="round"/>
+          <text x="30" y="128" font-family="monospace" font-size="8" fill="var(--accent)">L₂</text><text x="22" y="118" font-family="monospace" font-size="7" fill="var(--accent)">輸入桿</text>
+          <text x="138" y="82" font-family="monospace" font-size="8" fill="rgba(255,255,255,.4)">L₃ 連桿</text>
+          <text x="262" y="105" font-family="monospace" font-size="8" fill="rgba(74,158,255,.9)">L₄</text><text x="256" y="115" font-family="monospace" font-size="7" fill="rgba(74,158,255,.8)">輸出桿</text>
+          <path d="M 60 108 A 37 37 0 0 1 97 145" fill="none" stroke="rgba(240,90,40,.3)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arr)"/>
+          <rect x="284" y="16" width="68" height="24" rx="3" fill="rgba(240,90,40,.12)" stroke="rgba(240,90,40,.3)" stroke-width="1"/><text x="318" y="32" font-family="monospace" font-size="9" fill="var(--accent)" text-anchor="middle">DOF = 1</text>
+        </svg>
+        <div class="diagram-caption">曲柄搖桿機構 · L₂ 為輸入桿（曲柄），L₄ 為輸出桿（搖桿）</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;">
+        <div class="img-block" style="height:145px;"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Four_bar_linkage_animated.gif/320px-Four_bar_linkage_animated.gif" alt="Crank rocker animation" loading="lazy" style="object-fit:contain;background:#111;padding:.5rem;"><div class="img-caption">曲柄搖桿 · Wikimedia</div></div>
+        <div class="img-block" style="height:145px;"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Parallel_four_bar_linkage.gif/320px-Parallel_four_bar_linkage.gif" alt="Parallelogram linkage" loading="lazy" style="object-fit:contain;background:#111;padding:.5rem;"><div class="img-caption">平行四連桿（雙曲柄特例）· Wikimedia</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Type table -->
+  <div class="reveal" style="margin-top:4rem;">
+    <h3 style="font-family:var(--sans);font-weight:700;font-size:1.35rem;letter-spacing:-.02em;margin-bottom:1.5rem;">四種型態：連桿長度 × 固定哪根桿</h3>
+    <table class="grashof-table">
+      <thead><tr><th>型態</th><th>英文名</th><th>條件（滿足 Grashof）</th><th>特性</th><th>生活例子</th></tr></thead>
+      <tbody>
+        <tr><td>曲柄搖桿</td><td style="font-family:var(--mono);font-size:.75rem;color:var(--muted);">Crank-Rocker</td><td>最短桿 = <em>輸入桿</em>（鄰接地桿）</td><td>輸入桿連續旋轉，輸出桿來回擺動</td><td>汽車雨刷、窗戶升降機</td></tr>
+        <tr><td>雙曲柄</td><td style="font-family:var(--mono);font-size:.75rem;color:var(--muted);">Double Crank</td><td>最短桿 = <em>地桿</em></td><td>輸入、輸出桿都可連續旋轉，角速度不等</td><td>蒸汽火車驅動輪連桿</td></tr>
+        <tr><td>平行四連桿<br><span style="font-family:var(--mono);font-size:.7rem;color:var(--accent2);">（雙曲柄特例）</span></td><td style="font-family:var(--mono);font-size:.75rem;color:var(--muted);">Parallelogram</td><td>對邊等長（L₁=L₃, L₂=L₄），地桿最短</td><td>輸出桿與輸入桿<strong style="color:var(--text)">等速旋轉</strong>，末端始終保持平行姿態</td><td>平行夾爪、吊臂</td></tr>
+        <tr><td>雙搖桿</td><td style="font-family:var(--mono);font-size:.75rem;color:var(--muted);">Double Rocker</td><td>最短桿 = 連桿，或不滿足 Grashof</td><td>兩端都只能擺動，無法完整旋轉</td><td>摺疊椅、汽車前輪轉向桿</td></tr>
+      </tbody>
+    </table>
+    <p style="font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-top:1rem;letter-spacing:.05em;">資料來源：<sup>[9,10]</sup></p>
+  </div>
+</div>
+</section>
+
+<!-- SIMULATOR -->
+<section id="simulator">
+<div class="section-inner">
+  <div class="section-label reveal">Interactive Tool</div>
+  <h2 class="section-title reveal">四連桿互動模擬器</h2>
+  <p style="font-size:1rem;color:var(--muted);max-width:640px;line-height:1.85;margin-bottom:3rem;" class="reveal">調整下方四根桿的長度，即時觀察機構如何運動。Grashof 條件是否滿足、目前是哪種型態，模擬器會即時告訴你。</p>
+  <div class="sim-layout reveal">
+    <div class="sim-canvas-wrap">
+      <canvas id="fourbarCanvas" width="720" height="480"></canvas>
+    </div>
+    <div class="sim-controls">
+      <h4>桿件長度設定</h4>
+      <div class="ctrl-group"><div class="ctrl-label">L₁ 地桿（固定）<span id="v1">180</span></div><input type="range" id="sl1" min="60" max="280" value="180"></div>
+      <div class="ctrl-group"><div class="ctrl-label" style="color:var(--accent);">L₂ 輸入桿（曲柄）<span id="v2">80</span></div><input type="range" id="sl2" min="30" max="200" value="80"></div>
+      <div class="ctrl-group"><div class="ctrl-label" style="color:rgba(232,228,219,.6);">L₃ 連桿<span id="v3">160</span></div><input type="range" id="sl3" min="60" max="280" value="160"></div>
+      <div class="ctrl-group"><div class="ctrl-label" style="color:var(--blue);">L₄ 輸出桿<span id="v4">140</span></div><input type="range" id="sl4" min="30" max="280" value="140"></div>
+      <div class="sim-status" id="simStatus"><span class="status-ok">● 計算中...</span></div>
+      <div class="sim-legend">
+        <div class="sim-legend-item"><div class="sim-legend-dot" style="background:rgba(255,255,255,.3);border:2px solid rgba(255,255,255,.3);"></div>L₁ 地桿</div>
+        <div class="sim-legend-item"><div class="sim-legend-dot" style="background:var(--accent);"></div>L₂ 輸入桿</div>
+        <div class="sim-legend-item"><div class="sim-legend-dot" style="background:rgba(232,228,219,.6);border-radius:2px;"></div>L₃ 連桿</div>
+        <div class="sim-legend-item"><div class="sim-legend-dot" style="background:var(--blue);"></div>L₄ 輸出桿</div>
+        <div class="sim-legend-item"><div class="sim-legend-dot" style="background:rgba(245,166,35,.5);border-radius:0;width:16px;height:4px;"></div>連桿點軌跡</div>
+      </div>
+      <div class="sim-btn-row">
+        <button class="sim-btn active" id="btnPlay" onclick="toggleAnim()">⏸ 暫停</button>
+        <button class="sim-btn" onclick="resetSim()">↺ 重置</button>
+      </div>
+      <div class="sim-tip">💡 試試 L₁=L₃、L₂=L₄（平行四連桿，等速旋轉）<br>或把地桿 L₁ 調成最短（雙曲柄型態）</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- MECHANISMS GALLERY -->
+<section id="mechanisms">
+<div class="section-inner">
+  <div class="section-label reveal">Mechanism Gallery</div>
+  <h2 class="section-title reveal">六種必學的<br>基本機構</h2>
+  <div style="max-width:640px;margin-bottom:4rem;" class="reveal">
+    <p style="font-size:1rem;color:var(--muted);line-height:1.85;">每個機構都有對應的動畫影片（來自 Nguyen Duc Thang 的頻道 <code style="font-family:var(--mono);font-size:.85rem;color:var(--accent)">thang010146</code>，超過 3000 部）。<sup class="ref">[11]</sup></p>
+  </div>
+
+  <div class="mech-cards reveal">
+    <div class="mech-card">
+      <div class="video-wrap"><iframe src="https://www.youtube.com/embed/csNsrUkBlx0?start=0&rel=0&modestbranding=1" allowfullscreen loading="lazy" title="Mechanical Animation Overview"></iframe></div>
+      <div class="mech-card-body"><div class="mech-card-num">// 01</div><h3>滑塊曲柄機構</h3><span class="mech-card-en">Slider-Crank</span><div class="mech-io"><span class="io-in">旋轉</span><span class="io-arrow">⇄</span><span class="io-out">直線往復</span></div><p class="mech-card-examples">四連桿的特例：把輸出桿末端的旋轉接頭改成滑動接頭。汽油引擎活塞↔曲軸、空氣壓縮機、手動幫浦。<sup class="ref">[12]</sup></p></div>
+    </div>
+    <div class="mech-card">
+      <div class="video-wrap"><iframe src="https://www.youtube.com/embed/yTCKF0cqWz8?rel=0&modestbranding=1" allowfullscreen loading="lazy" title="Four Bar Crank Rocker Animation"></iframe></div>
+      <div class="mech-card-body"><div class="mech-card-num">// 02</div><h3>四連桿—曲柄搖桿</h3><span class="mech-card-en">Crank-Rocker</span><div class="mech-io"><span class="io-in">連續旋轉</span><span class="io-arrow">→</span><span class="io-out">擺動旋轉</span></div><p class="mech-card-examples">汽車車窗升降、雨刷系統、引擎罩開合。連桿長度比例決定輸出桿擺動角度與速度特性。<sup class="ref">[9]</sup></p></div>
+    </div>
+    <div class="mech-card">
+      <div class="video-wrap"><iframe src="https://www.youtube.com/embed/csNsrUkBlx0?start=120&rel=0&modestbranding=1" allowfullscreen loading="lazy" title="Quick Return Mechanism"></iframe></div>
+      <div class="mech-card-body"><div class="mech-card-num">// 03</div><h3>快速回程機構</h3><span class="mech-card-en">Quick-Return</span><div class="mech-io"><span class="io-in">等速旋轉</span><span class="io-arrow">→</span><span class="io-out">不等速往復</span></div><p class="mech-card-examples">車床刨床、金屬鋸床。切削行程慢而有力，回程快速省時——偏置滑塊曲柄的特性。<sup class="ref">[12]</sup></p></div>
+    </div>
+    <div class="mech-card">
+      <div class="video-wrap"><iframe src="https://www.youtube.com/embed/csNsrUkBlx0?start=5&rel=0&modestbranding=1" allowfullscreen loading="lazy" title="Cam Follower Mechanism"></iframe></div>
+      <div class="mech-card-body"><div class="mech-card-num">// 04</div><h3>凸輪–從動件</h3><span class="mech-card-en">Cam-Follower</span><div class="mech-io"><span class="io-in">等速旋轉</span><span class="io-arrow">→</span><span class="io-out">任意規劃往復</span></div><p class="mech-card-examples">引擎配氣機構（控制氣門開閉時序）、紡織機推桿。凸輪輪廓形狀決定從動件的整個運動歷程。<sup class="ref">[22]</sup></p></div>
+    </div>
+    <div class="mech-card">
+      <div class="video-wrap"><iframe src="https://www.youtube.com/embed/csNsrUkBlx0?start=185&rel=0&modestbranding=1" allowfullscreen loading="lazy" title="Gear Train Mechanism"></iframe></div>
+      <div class="mech-card-body"><div class="mech-card-num">// 05</div><h3>齒輪列</h3><span class="mech-card-en">Gear Train</span><div class="mech-io"><span class="io-in">轉速 / 扭矩</span><span class="io-arrow">→</span><span class="io-out">變換輸出</span></div><p class="mech-card-examples">腳踏車變速、鐘錶走針、馬達減速器。速比 i = 輸出齒數÷輸入齒數。<sup class="ref">[19]</sup></p></div>
+    </div>
+    <div class="mech-card">
+      <div class="video-wrap"><iframe src="https://www.youtube.com/embed/csNsrUkBlx0?start=155&rel=0&modestbranding=1" allowfullscreen loading="lazy" title="Geneva Drive Mechanism"></iframe></div>
+      <div class="mech-card-body"><div class="mech-card-num">// 06</div><h3>日內瓦機構</h3><span class="mech-card-en">Geneva Drive</span><div class="mech-io"><span class="io-in">連續旋轉</span><span class="io-arrow">→</span><span class="io-out">間歇步進</span></div><p class="mech-card-examples">傳統電影放映機底片步進（每秒 24 格）、自動化工作台分度盤。<sup class="ref">[13]</sup></p></div>
+    </div>
+  </div>
+
+  <div class="mech-image-row reveal">
+    <div class="img-block"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Slider-crank_animation.gif/320px-Slider-crank_animation.gif" alt="Slider crank animation" loading="lazy"><div class="img-caption">滑塊曲柄機構 · Wikimedia (CC)</div></div>
+    <div class="img-block"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Geneva_mechanism_6spoke_animation.gif/280px-Geneva_mechanism_6spoke_animation.gif" alt="Geneva mechanism" loading="lazy"><div class="img-caption">日內瓦機構（6槽）· Wikimedia (CC)</div></div>
+    <div class="img-block"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Cam_follower_types.svg/320px-Cam_follower_types.svg.png" alt="Cam follower types" loading="lazy" style="background:#fff;"><div class="img-caption">凸輪從動件類型 · Wikimedia (CC)</div></div>
+  </div>
+
+  <div class="thang-section reveal">
+    <div>
+      <div class="section-label" style="margin-bottom:1rem;">延伸觀賞</div>
+      <h3>3000+ 機構動畫頻道</h3>
+      <p>越南機械工程師 <strong style="color:var(--text)">Nguyen Duc Thang</strong> 用 Autodesk Inventor 製作了超過 3000 個機構動畫，從基本四連桿到行星齒輪、棘輪、差速器，全部都有。<sup class="ref">[11]</sup></p>
+      <a href="https://www.youtube.com/@thang010146" target="_blank" class="ext-link">→ youtube.com/@thang010146</a>
+    </div>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/csNsrUkBlx0?rel=0&modestbranding=1" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- MACHINES -->
+<section id="machines">
+<div class="section-inner">
+  <div class="section-label reveal">Real-World Applications</div>
+  <h2 class="section-title reveal">這些機構，<br>你每天都在用</h2>
+  <div class="reveal">
+    <div class="machine-row">
+      <div class="machine-num">應用 01<br>內燃機</div>
+      <div>
+        <h3>汽油引擎</h3>
+        <p>活塞、連桿、曲軸就是<strong style="color:var(--text)">滑塊曲柄機構</strong>：燃燒膨脹推動活塞直線運動，透過連桿轉換成曲軸旋轉輸出。氣門的開閉時序，則由凸輪軸上的<strong style="color:var(--text)">凸輪–從動件</strong>精確控制。思考：引擎為什麼需要「飛輪」？<sup class="ref">[12]</sup></p>
+        <img class="machine-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/4-Stroke-Engine.gif/240px-4-Stroke-Engine.gif" alt="Four stroke engine animation" loading="lazy">
+        <div class="img-caption" style="margin-top:0;border-top:none;padding-top:0;">四行程引擎 · Wikimedia Commons (CC)</div>
+      </div>
+      <div class="machine-mech-tag"><span class="mmt">滑塊曲柄</span><span class="mmt">凸輪從動件</span></div>
+    </div>
+    <div class="machine-row">
+      <div class="machine-num">應用 02<br>工具機</div>
+      <div>
+        <h3>刨床與往復鋸</h3>
+        <p>金屬鋸床需要：切削行程慢而穩定，回程越快越好。這正好對應<strong style="color:var(--text)">快速回程機構（偏置滑塊曲柄）</strong>的特性。你能用模擬器量測前進與後退的時間比嗎？<sup class="ref">[12]</sup></p>
+      </div>
+      <div class="machine-mech-tag"><span class="mmt">快速回程</span><span class="mmt">偏置曲柄</span></div>
+    </div>
+    <div class="machine-row">
+      <div class="machine-num">應用 03<br>電影放映機</div>
+      <div>
+        <h3>傳統底片放映機</h3>
+        <p>底片每秒必須精確步進 24 格，每格曝光期間<em>完全靜止</em>。<strong style="color:var(--text)">日內瓦機構</strong>完美解決：銷釘每轉一圈插入一個槽，帶動底片前進一格；圓弧鎖定面確保其餘時間完全不動。<sup class="ref">[13]</sup></p>
+        <img class="machine-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Geneva_mechanism_animation.gif/240px-Geneva_mechanism_animation.gif" alt="Geneva mechanism" loading="lazy">
+        <div class="img-caption" style="margin-top:0;border-top:none;padding-top:0;">日內瓦機構 · Wikimedia (CC)</div>
+      </div>
+      <div class="machine-mech-tag"><span class="mmt">日內瓦機構</span><span class="mmt">間歇運動</span></div>
+    </div>
+    <div class="machine-row">
+      <div class="machine-num">應用 04<br>汽車懸吊</div>
+      <div>
+        <h3>後懸吊 Watt's Linkage</h3>
+        <p>瓦特連桿——工業革命的產物——今日仍出現在許多後驅車懸吊系統裡（部分 Mustang、SUV）。任務是讓後軸只能上下移動，阻止左右飄移，同時不需要額外導軌。150 年前解決蒸汽機問題的四連桿，現在還在你的車底盤裡。<sup class="ref">[3]</sup></p>
+        <img class="machine-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Watt%27s_Linkage_animated.gif/280px-Watt%27s_Linkage_animated.gif" alt="Watt linkage animation" loading="lazy">
+        <div class="img-caption" style="margin-top:0;border-top:none;padding-top:0;">瓦特連桿 · Wikimedia (CC)</div>
+      </div>
+      <div class="machine-mech-tag"><span class="mmt">瓦特連桿</span><span class="mmt">四連桿</span></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ROBOTS -->
+<section id="robots">
+<div class="section-inner">
+  <div class="section-label reveal">Robotics</div>
+  <h2 class="section-title reveal">機構學在<br>機器人裡的角色</h2>
+  <div class="robots-grid reveal">
+    <div class="robot-card"><div class="robot-card-num">// 底盤與輪系</div><h3>差速驅動<br>底盤設計</h3><p>差速驅動車的轉向原理直觀：左輪快右輪慢→向右轉。但馬達通常轉速太快、扭矩太小，所以需要<strong style="color:var(--text)">齒輪減速組</strong>。設計時要問：需要多大的驅動扭矩？要配幾比一的齒輪比？</p><div class="robot-tags"><span class="rtag">齒輪列</span><span class="rtag">差速驅動</span><span class="rtag">扭矩計算</span><span class="rtag">皮帶輪</span></div></div>
+    <div class="robot-card"><div class="robot-card-num">// 機械手臂</div><h3>串聯關節<br>與多自由度</h3><p>教育用機械臂通常是<strong style="color:var(--text)">串聯式關節機構</strong>：每個關節是一個旋轉接頭，多個關節疊加，DOF 個數決定可達到的空間範圍。思考：在平面內定位一個點 + 控制末端角度，最少需要幾個關節？</p><div class="robot-tags"><span class="rtag">旋轉接頭</span><span class="rtag">串聯機構</span><span class="rtag">多自由度</span><span class="rtag">逆運動學</span></div></div>
+    <div class="robot-card"><div class="robot-card-num">// 末端執行器</div><h3>夾爪機構<br>設計思考</h3><p><strong style="color:var(--text)">平行四連桿夾爪</strong>可以保持夾片始終平行，使夾取姿態穩定（正是平行四連桿等速旋轉 + 保持姿態的應用）；<strong style="color:var(--text)">凸輪驅動的夾爪</strong>可以規劃非線性出力曲線。</p><div class="robot-tags"><span class="rtag">平行四連桿</span><span class="rtag">凸輪夾爪</span><span class="rtag">鉸鏈設計</span><span class="rtag">力分析</span></div></div>
+  </div>
+</div>
+</section>
+
+<!-- TOOLS + TUTORIALS -->
+<section id="tools">
+<div class="section-inner">
+  <div class="section-label reveal">Tools & Tutorials</div>
+  <h2 class="section-title reveal">工具介紹<br>與操作教學</h2>
+  <div class="tools-grid reveal">
+    <div class="tool-card">
+      <div class="tool-icon"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="8" cy="20" r="5" stroke="var(--accent)" stroke-width="2"/><circle cx="32" cy="20" r="5" stroke="var(--accent)" stroke-width="2"/><line x1="13" y1="17" x2="27" y2="17" stroke="var(--muted)" stroke-width="2"/><line x1="13" y1="23" x2="27" y2="23" stroke="var(--muted)" stroke-width="2"/></svg></div>
+      <h3>Linkage</h3>
+      <span class="tool-purpose" style="color:var(--accent);">連桿模擬 · 免費 · 無需帳號</span>
+      <p>瀏覽器版連桿模擬器，即時拖拉改變連桿長度，觀察連桿點軌跡。適合直覺探索四連桿各種型態。<sup class="ref">[14]</sup></p>
+      <a href="https://linkage.js.org" target="_blank" class="ext-link">→ linkage.js.org</a>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M8 32 L8 10 L20 20 L32 10 L32 32" stroke="var(--blue)" stroke-width="2" fill="none" stroke-linejoin="round"/><circle cx="8" cy="32" r="3" fill="var(--blue)" opacity=".7"/><circle cx="32" cy="32" r="3" fill="var(--blue)" opacity=".7"/><circle cx="20" cy="20" r="3" fill="var(--blue)" opacity=".7"/></svg></div>
+      <h3>MotionGen</h3>
+      <span class="tool-purpose" style="color:var(--blue);">連桿合成設計 · 免費帳號</span>
+      <p>Stony Brook University 開發，可指定連桿要通過哪些姿態，自動反推需要的連桿尺寸（機構合成）。建議使用 Chrome 或 Edge。<sup class="ref">[15]</sup></p>
+      <a href="https://motiongen.io" target="_blank" class="ext-link">→ motiongen.io</a>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="6" y="10" width="28" height="22" rx="2" stroke="var(--green)" stroke-width="2"/><line x1="6" y1="17" x2="34" y2="17" stroke="var(--green)" stroke-width="1.5" opacity=".5"/><circle cx="20" cy="27" r="5" fill="none" stroke="var(--green)" stroke-width="1.5"/></svg></div>
+      <h3>OnShape</h3>
+      <span class="tool-purpose" style="color:var(--green);">3D 參數化繪圖 · 免費帳號</span>
+      <p>完全免費的瀏覽器版 3D CAD，不需安裝，可繪製機構零件、加入限制條件、模擬運動。<sup class="ref">[16]</sup></p>
+      <a href="https://www.onshape.com" target="_blank" class="ext-link">→ onshape.com</a>
+    </div>
+  </div>
+
+  <div class="tutorial-tabs reveal">
+    <button class="tab-btn active" onclick="switchTab('linkage-tab',this)">Linkage 連桿模擬</button>
+    <button class="tab-btn" onclick="switchTab('motiongen-tab',this)">MotionGen 連桿合成</button>
+  </div>
+
+  <div class="tab-pane active" id="linkage-tab">
+    <div class="tutorial-layout reveal">
+      <div class="tutorial-steps">
+        <div class="tutorial-step"><div class="step-num">01</div><div class="step-body"><h4>開啟工具</h4><p>前往 <code>linkage.js.org</code>，無需登入。畫面中央會看到預設的四連桿機構，已經在動了。</p></div></div>
+        <div class="tutorial-step"><div class="step-num">02</div><div class="step-body"><h4>認識介面</h4><p>黃色節點 = 固定接頭（地桿），灰色節點 = 可動接頭。連桿以直線表示，右側有連桿長度數值輸入欄位。</p></div></div>
+        <div class="tutorial-step"><div class="step-num">03</div><div class="step-body"><h4>拖拉節點，改變長度</h4><p>直接拖拉任意節點，連桿長度即時改變，機構運動也跟著變。觀察輸出桿的擺動角度如何隨連桿比例改變。</p></div></div>
+        <div class="tutorial-step"><div class="step-num">04</div><div class="step-body"><h4>驗證 Grashof 條件</h4><p>把最短桿調很短（例如長度 = 1），最長桿調很長（例如長度 = 5），觀察哪根桿能做完整旋轉。再反過來調到不滿足 s + l ≤ p + q，觀察機構變化。</p></div></div>
+        <div class="tutorial-step"><div class="step-num">05</div><div class="step-body"><h4>觀察連桿點軌跡</h4><p>點擊連桿上任意位置新增「連桿點」，啟動軌跡顯示後，觀察它描繪出什麼曲線（coupler curve）。</p></div></div>
+        <div class="tutorial-step"><div class="step-num">06</div><div class="step-body"><h4>挑戰任務</h4><p>嘗試設計一個曲柄搖桿，讓輸出桿的擺動範圍盡量大（接近 180°）。記錄你找到的連桿長度比例。</p></div></div>
+      </div>
+      <div>
+        <div class="video-wrap" style="margin-bottom:1.5rem;"><iframe src="https://www.youtube.com/embed/yTCKF0cqWz8?rel=0&modestbranding=1" allowfullscreen loading="lazy"></iframe></div>
+        <div class="tutorial-links">
+          <a href="https://linkage.js.org" target="_blank" class="tutorial-link-item"><span style="font-size:1.1rem;opacity:.6;">🔗</span><span><span class="tl-title">Linkage 模擬器</span><span class="tl-url">linkage.js.org</span></span></a>
+          <a href="https://en.wikipedia.org/wiki/Grashof%27s_theorem" target="_blank" class="tutorial-link-item"><span style="font-size:1.1rem;opacity:.6;">📖</span><span><span class="tl-title">Grashof's Theorem</span><span class="tl-url">Wikipedia — 詳細說明與數學推導</span></span></a>
+          <a href="https://www.mevirtuoso.com/four-bar-linkage-simulator/" target="_blank" class="tutorial-link-item"><span style="font-size:1.1rem;opacity:.6;">🔧</span><span><span class="tl-title">另一個四連桿模擬器</span><span class="tl-url">mevirtuoso.com — 可顯示速度曲線</span></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-pane" id="motiongen-tab">
+    <div class="tutorial-layout reveal">
+      <div class="tutorial-steps">
+        <div class="tutorial-step"><div class="step-num">01</div><div class="step-body"><h4>註冊免費帳號</h4><p>前往 <code>motiongen.io</code>，點擊 Sign Up 建立免費帳號。確認信可能在垃圾信件匣。建議使用 Chrome 或 Edge。</p></div></div>
+        <div class="tutorial-step"><div class="step-num">02</div><div class="step-body"><h4>建立第一個四連桿</h4><p>點擊右上角「Add Link」加入連桿，用「Add Joint」在兩根連桿之間建立接頭，連接四根桿形成閉迴路。</p></div></div>
+        <div class="tutorial-step"><div class="step-num">03</div><div class="step-body"><h4>設定地桿（固定接頭）</h4><p>點擊一個接頭，選擇「Ground」將它固定。四連桿需要固定兩個接頭（地桿兩端）才能正常運動。</p></div></div>
+        <div class="tutorial-step"><div class="step-num">04</div><div class="step-body"><h4>加入驅動器（actuator）</h4><p>點擊輸入桿的旋轉接頭，選擇「Add Rotary Actuator」，設定旋轉速度。按播放，機構開始動。</p></div></div>
+        <div class="tutorial-step"><div class="step-num">05</div><div class="step-body"><h4>查看連桿點軌跡</h4><p>點擊任意連桿上的點，選擇「Show Coupler Curve」，看這個點在整個運動週期內描繪的軌跡。</p></div></div>
+        <div class="tutorial-step"><div class="step-num">06</div><div class="step-body"><h4>進階：位置合成</h4><p>在畫面上標記連桿要通過的姿態位置，讓軟體自動計算出需要的連桿尺寸——這是 MotionGen 最強大的功能。</p></div></div>
+      </div>
+      <div>
+        <div class="video-wrap" style="margin-bottom:1.5rem;"><iframe src="https://www.youtube.com/embed/csNsrUkBlx0?rel=0&modestbranding=1" allowfullscreen loading="lazy"></iframe></div>
+        <div class="tutorial-links">
+          <a href="https://motiongen.io" target="_blank" class="tutorial-link-item"><span style="font-size:1.1rem;opacity:.6;">🔗</span><span><span class="tl-title">MotionGen Pro</span><span class="tl-url">motiongen.io — 登入後開始使用</span></span></a>
+          <a href="https://www.stonybrook.edu/commcms/motiongen/how-to-use.php" target="_blank" class="tutorial-link-item"><span style="font-size:1.1rem;opacity:.6;">📖</span><span><span class="tl-title">官方教學手冊與影片</span><span class="tl-url">stonybrook.edu — Live Manual + 教學 Playlist</span></span></a>
+          <a href="https://sites.google.com/stonybrook.edu/mec101fall2024/motiongen-tutorial" target="_blank" class="tutorial-link-item"><span style="font-size:1.1rem;opacity:.6;">🎓</span><span><span class="tl-title">Stony Brook 大學課程教材</span><span class="tl-url">MEC101 — 完整課堂操作指引</span></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kmoddl-banner reveal">
+    <div><h3>Cornell KMODDL — 免費線上機構博物館</h3><p>Reuleaux 230 件精密金屬機構模型的數位典藏，每件都有動態影片、歷史說明。<sup class="ref">[7]</sup></p></div>
+    <a href="https://digital.library.cornell.edu/collections/kmoddl" target="_blank" class="kmoddl-btn">前往探索 →</a>
+  </div>
+</div>
+</section>
+
+<!-- SELF STUDY -->
+<section id="selfstudy" style="background:var(--bg);">
+<div class="section-inner">
+  <div class="section-label reveal">Advanced Self-Study</div>
+  <h2 class="section-title reveal">想學更多？<br>從這裡出發</h2>
+  <div class="study-grid reveal">
+    <div class="study-card"><div class="study-card-level l0">入門 · Beginner</div><h3>互動式機構百科</h3><p>「507 Mechanical Movements」是 19 世紀的機構圖典，現已加入動畫，適合從零開始的瀏覽式學習。</p><div class="study-links"><a href="http://507movements.com" target="_blank" class="study-link">507movements.com</a><a href="https://digital.library.cornell.edu/collections/kmoddl" target="_blank" class="study-link">Cornell KMODDL 機構典藏</a></div></div>
+    <div class="study-card"><div class="study-card-level l0">入門 · Beginner</div><h3>互動式齒輪物理</h3><p>Bartosz Ciechanowski 的互動式文章，用精美的動畫說明齒輪的物理原理：從摩擦輪到齒輪齒形，直到漸開線曲線的數學。是目前最好的齒輪視覺化資源。</p><div class="study-links"><a href="https://ciechanow.ski/gears/" target="_blank" class="study-link">ciechanow.ski/gears — 互動式齒輪詳解</a><a href="https://geargenerator.com" target="_blank" class="study-link">geargenerator.com — 互動齒輪模擬器</a></div></div>
+    <div class="study-card"><div class="study-card-level l1">基礎 · Foundation</div><h3>Grashof 定律</h3><p>想看 Grashof 定律的數學推導和所有邊界條件？Wikipedia 的說明相當完整，搭配本頁模擬器一起看，花半小時可以完全理解。</p><div class="study-links"><a href="https://en.wikipedia.org/wiki/Grashof%27s_theorem" target="_blank" class="study-link">Grashof's Theorem — Wikipedia</a><a href="#simulator" class="study-link">本頁四連桿模擬器（對照驗證）</a></div></div>
+    <div class="study-card"><div class="study-card-level l1">基礎 · Foundation</div><h3>連桿點軌跡（Coupler Curve）</h3><p>四連桿的連桿點可以描繪出各式各樣的奇特曲線——接近直線、橢圓、8 字。這是瓦特連桿的核心原理。</p><div class="study-links"><a href="https://motiongen.io" target="_blank" class="study-link">MotionGen — 探索連桿曲線</a><a href="https://www.mevirtuoso.com/four-bar-linkage-simulator/" target="_blank" class="study-link">四連桿模擬器（速度曲線）</a></div></div>
+    <div class="study-card"><div class="study-card-level l2">進階 · Intermediate</div><h3>機構「合成」是什麼？</h3><p>機構「分析」是給定尺寸求運動；「合成（synthesis）」是反過來——給定想要的運動，求需要什麼連桿尺寸。MotionGen 背後就是多項式方程組求解。</p><div class="study-links"><a href="https://motiongen.io" target="_blank" class="study-link">MotionGen Pro — 位置合成功能</a><a href="https://www.stonybrook.edu/commcms/motiongen/what.php" target="_blank" class="study-link">MotionGen 說明文件</a></div></div>
+    <div class="study-card"><div class="study-card-level l3">深入 · Advanced</div><h3>機器人逆運動學（IK）</h3><p>機器人手臂的「逆運動學」問題，本質上就是機構合成的空間版：給定末端位置，求各關節需要轉多少角度。</p><div class="study-links"><a href="https://en.wikipedia.org/wiki/Inverse_kinematics" target="_blank" class="study-link">Inverse Kinematics — Wikipedia</a><a href="https://www.youtube.com/@thang010146" target="_blank" class="study-link">3000+ 機構動畫頻道 (thang010146)</a></div></div>
+  </div>
+</div>
+</section>
+
+<!-- REFERENCES -->
+<section id="references">
+<div class="section-inner">
+  <div class="section-label reveal">References</div>
+  <h2 class="section-title reveal">參考資料</h2>
+  <p style="font-size:.92rem;color:var(--muted);max-width:680px;line-height:1.85;margin-bottom:3rem;" class="reveal">本網站所有內容均有學術或可信來源支撐。上標數字（如 <sup style="color:var(--accent2)">[1]</sup>）對應以下編號。</p>
+  <div class="refs-list reveal">
+    <div class="ref-item"><div class="ref-num">[1]</div><div class="ref-body"><span class="ref-title">Kinematics, Polynomials, and Computers — A Brief History.</span> McCarthy, J.M. (2011). ASME Journal of Mechanisms and Robotics. <a href="https://asmedigitalcollection.asme.org/mechanismsrobotics/article/3/1/010201/468294" target="_blank">→ asmedigitalcollection.asme.org</a></div></div>
+    <div class="ref-item"><div class="ref-num">[2]</div><div class="ref-body"><span class="ref-title">Kinematics of Mechanisms from the Time of Watt.</span> Ferguson, E.S. (1962). United States National Museum Bulletin 228. <a href="https://www.gutenberg.org/files/27106/27106-h/27106-h.htm" target="_blank">→ gutenberg.org (全文免費)</a></div></div>
+    <div class="ref-item"><div class="ref-num">[3]</div><div class="ref-body"><span class="ref-title">Watt's linkage.</span> Wikipedia. <a href="https://en.wikipedia.org/wiki/Watt%27s_linkage" target="_blank">→ en.wikipedia.org/wiki/Watt's_linkage</a></div></div>
+    <div class="ref-item"><div class="ref-num">[4]</div><div class="ref-body"><span class="ref-title">Principles of Mechanisms.</span> Willis, R. (1841). London: John W. Parker.</div></div>
+    <div class="ref-item"><div class="ref-num">[5]</div><div class="ref-body"><span class="ref-title">Straight-line mechanism.</span> Wikipedia. <a href="https://en.wikipedia.org/wiki/Straight-line_mechanism" target="_blank">→ en.wikipedia.org/wiki/Straight-line_mechanism</a></div></div>
+    <div class="ref-item"><div class="ref-num">[6]</div><div class="ref-body"><span class="ref-title">Franz Reuleaux: Contributions to 19th Century Kinematics.</span> Moon, F.C. (2003). Applied Mechanics Reviews, 56(2). <a href="https://www.ams.stonybrook.edu/~coutsias/papers/FLEX/Reuleaux_AMR.pdf" target="_blank">→ PDF 全文</a></div></div>
+    <div class="ref-item"><div class="ref-num">[7]</div><div class="ref-body"><span class="ref-title">Reuleaux Kinematic Mechanisms Collection.</span> Cornell University Library Digital Collections (KMODDL). <a href="https://digital.library.cornell.edu/collections/kmoddl" target="_blank">→ digital.library.cornell.edu/collections/kmoddl</a></div></div>
+    <div class="ref-item"><div class="ref-num">[8]</div><div class="ref-body"><span class="ref-title">Linkage (mechanical).</span> Wikipedia. <a href="https://en.wikipedia.org/wiki/Linkage_(mechanical)" target="_blank">→ en.wikipedia.org/wiki/Linkage_(mechanical)</a></div></div>
+    <div class="ref-item"><div class="ref-num">[9]</div><div class="ref-body"><span class="ref-title">Grashof's theorem.</span> Wikipedia. <a href="https://en.wikipedia.org/wiki/Grashof%27s_theorem" target="_blank">→ en.wikipedia.org/wiki/Grashof's_theorem</a></div></div>
+    <div class="ref-item"><div class="ref-num">[10]</div><div class="ref-body"><span class="ref-title">Design of Machinery.</span> Norton, R.L. McGraw-Hill. — Grashof 條件詳細說明見第 2 章。</div></div>
+    <div class="ref-item"><div class="ref-num">[11]</div><div class="ref-body"><span class="ref-title">Animated Mechanical Mechanisms.</span> Nguyen Duc Thang. YouTube: thang010146. <a href="https://www.youtube.com/@thang010146" target="_blank">→ youtube.com/@thang010146</a></div></div>
+    <div class="ref-item"><div class="ref-num">[12]</div><div class="ref-body"><span class="ref-title">Slider-crank mechanism.</span> Encyclopaedia Britannica. <a href="https://www.britannica.com/technology/slider-crank-mechanism" target="_blank">→ britannica.com</a></div></div>
+    <div class="ref-item"><div class="ref-num">[13]</div><div class="ref-body"><span class="ref-title">Geneva drive.</span> Wikipedia. <a href="https://en.wikipedia.org/wiki/Geneva_drive" target="_blank">→ en.wikipedia.org/wiki/Geneva_drive</a></div></div>
+    <div class="ref-item"><div class="ref-num">[14]</div><div class="ref-body"><span class="ref-title">Linkage — Browser-based linkage simulator.</span> <a href="https://linkage.js.org" target="_blank">→ linkage.js.org</a></div></div>
+    <div class="ref-item"><div class="ref-num">[15]</div><div class="ref-body"><span class="ref-title">MotionGen: Interactive Design and Editing of Planar Four-Bar Linkages.</span> Purwar, A. et al. (2017). ASME Journal of Mechanisms and Robotics. <a href="https://motiongen.io" target="_blank">→ motiongen.io</a></div></div>
+    <div class="ref-item"><div class="ref-num">[16]</div><div class="ref-body"><span class="ref-title">OnShape — Browser-based 3D CAD.</span> PTC Inc. <a href="https://www.onshape.com" target="_blank">→ onshape.com</a></div></div>
+    <div class="ref-item"><div class="ref-num">[17]</div><div class="ref-body"><span class="ref-title">507 Mechanical Movements.</span> Digitized version of the 1868 illustrated reference. <a href="http://507movements.com" target="_blank">→ 507movements.com</a></div></div>
+    <div class="ref-item"><div class="ref-num">[18]</div><div class="ref-body">圖片來源：Wikimedia Commons（各圖說明已標注原始授權）。使用之圖片均為 CC 授權或公共領域。</div></div>
+    <div class="ref-item"><div class="ref-num">[19]</div><div class="ref-body"><span class="ref-title">Gear.</span> Wikipedia — 齒輪歷史、分類、漸開線齒形、速比公式。 <a href="https://en.wikipedia.org/wiki/Gear" target="_blank">→ en.wikipedia.org/wiki/Gear</a></div></div>
+    <div class="ref-item"><div class="ref-num">[20]</div><div class="ref-body"><span class="ref-title">Epicyclic gearing.</span> Wikipedia — 行星齒輪組原理與應用。 <a href="https://en.wikipedia.org/wiki/Epicyclic_gearing" target="_blank">→ en.wikipedia.org/wiki/Epicyclic_gearing</a></div></div>
+    <div class="ref-item"><div class="ref-num">[21]</div><div class="ref-body"><span class="ref-title">Worm drive.</span> Wikipedia — 蝸輪蝸桿歷史與應用，含印度中世紀發明記載。 <a href="https://en.wikipedia.org/wiki/Worm_drive" target="_blank">→ en.wikipedia.org/wiki/Worm_drive</a></div></div>
+    <div class="ref-item"><div class="ref-num">[22]</div><div class="ref-body"><span class="ref-title">Cam (mechanism).</span> Wikipedia — 凸輪分類、從動件類型、位移程式。 <a href="https://en.wikipedia.org/wiki/Cam_(mechanism)" target="_blank">→ en.wikipedia.org/wiki/Cam_(mechanism)</a></div></div>
+    <div class="ref-item"><div class="ref-num">[23]</div><div class="ref-body"><span class="ref-title">Gears — Interactive article with animations.</span> Bartosz Ciechanowski. <a href="https://ciechanow.ski/gears/" target="_blank">→ ciechanow.ski/gears</a></div></div>
+  </div>
+</div>
+</section>
+
+<footer>
+  <div><div class="footer-brand">機構學</div><p class="footer-desc">機械如何運動？從最早的齒輪到現代機器人，機構學是理解這一切的語言。</p></div>
+  <div><h4>模擬工具</h4><ul><li><a href="#simulator">本頁四連桿模擬器</a></li><li><a href="https://linkage.js.org" target="_blank">Linkage.js</a></li><li><a href="https://motiongen.io" target="_blank">MotionGen Pro</a></li><li><a href="https://www.onshape.com" target="_blank">OnShape 3D CAD</a></li></ul></div>
+  <div><h4>參考資源</h4><ul><li><a href="https://digital.library.cornell.edu/collections/kmoddl" target="_blank">Cornell KMODDL</a></li><li><a href="http://507movements.com" target="_blank">507 Movements</a></li><li><a href="https://ciechanow.ski/gears/" target="_blank">互動式齒輪詳解</a></li><li><a href="https://www.youtube.com/@thang010146" target="_blank">thang010146 動畫</a></li></ul></div>
+  <div><h4>快速導覽</h4><ul><li><a href="#gears">齒輪機構</a></li><li><a href="#cams">凸輪機構</a></li><li><a href="#basics">四連桿</a></li><li><a href="#simulator">互動模擬器</a></li><li><a href="#references">參考資料</a></li></ul></div>
+</footer>
+
+<script>
+// HAMBURGER
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); mobileMenu.classList.toggle('open'); });
+mobileMenu.querySelectorAll('a').forEach(a => { a.addEventListener('click', () => { hamburger.classList.remove('open'); mobileMenu.classList.remove('open'); }); });
+
+// REVEAL
+const revealObs = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold:.07, rootMargin:'0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+document.querySelectorAll('.concepts-grid,.mech-cards,.robots-grid,.tools-grid,.study-grid,.gear-types-grid,.cam-types-grid,.cam-follower-grid').forEach(g => {
+  g.querySelectorAll(':scope > *').forEach((c, i) => { c.style.transitionDelay = `${i * .07}s`; });
+});
+
+// NAV ACTIVE
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === `#${current}`); });
+}, { passive:true });
+
+// TABS
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// CAM ANIMATION
+(function() {
+  const canvas = document.getElementById('camCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const dispCanvas = document.getElementById('dispCanvas');
+  const dctx = dispCanvas.getContext('2d');
+  const DW = dispCanvas.width, DH = dispCanvas.height;
+  let angle = 0, running = true;
+
+  function camRadius(a) {
+    const base = 80, deg = ((a * 180 / Math.PI) % 360 + 360) % 360;
+    if (deg < 120) return base + 55 * (0.5 - 0.5 * Math.cos(Math.PI * deg / 120));
+    if (deg < 180) return base + 55;
+    if (deg < 300) return base + 55 * (0.5 + 0.5 * Math.cos(Math.PI * (deg - 180) / 120));
+    return base;
+  }
+
+  const cx = W * 0.42, cy = H * 0.54;
+
+  function drawCam() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(37,43,54,.5)'; ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+    ctx.beginPath();
+    for (let i = 0; i <= 360; i++) {
+      const a = angle + i * Math.PI / 180;
+      const r = camRadius(a - angle);
+      const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(240,90,40,.15)'; ctx.fill();
+    ctx.strokeStyle = 'var(--accent)'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, 5, 0, Math.PI*2); ctx.fillStyle = 'var(--accent)'; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + 70*Math.cos(angle), cy + 70*Math.sin(angle));
+    ctx.strokeStyle = 'rgba(240,90,40,.4)'; ctx.lineWidth = 1.5; ctx.stroke();
+
+    const guideX = W * 0.78;
+    ctx.beginPath(); ctx.moveTo(guideX-14,0); ctx.lineTo(guideX-14,H); ctx.moveTo(guideX+14,0); ctx.lineTo(guideX+14,H);
+    ctx.strokeStyle = 'rgba(255,255,255,.1)'; ctx.lineWidth = 1; ctx.stroke();
+
+    const r = camRadius(-Math.PI/2 - angle + angle + angle - angle);
+    const relA = -Math.PI/2 - angle;
+    const rad = camRadius(((-Math.PI/2) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI) - angle);
+    // use simpler approach: follower height = cy - camRadius(phase)
+    const phase = ((-Math.PI/2 - angle) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI);
+    const followerY = cy - camRadius(phase);
+
+    const springTop = 20, springBottom = followerY - 20;
+    ctx.beginPath();
+    for (let i = 0; i <= 32; i++) {
+      const t = i/32, sy = springTop + (springBottom - springTop)*t;
+      const sx = guideX + (i%4<2?1:-1) * 6 * Math.sin(i*Math.PI/2);
+      if (i===0) ctx.moveTo(sx,sy); else ctx.lineTo(sx,sy);
+    }
+    ctx.strokeStyle = 'rgba(255,255,255,.2)'; ctx.lineWidth = 1.5; ctx.stroke();
+
+    ctx.beginPath(); ctx.rect(guideX-14, followerY-40, 28, 40);
+    ctx.fillStyle = 'rgba(74,158,255,.2)'; ctx.fill();
+    ctx.strokeStyle = 'rgba(74,158,255,.7)'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.beginPath(); ctx.arc(guideX, followerY, 10, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(74,158,255,.3)'; ctx.fill();
+    ctx.strokeStyle = 'rgba(74,158,255,.9)'; ctx.lineWidth = 2; ctx.stroke();
+
+    const liftPct = (camRadius(phase) - 80) / 55;
+    let phaseLabel = '', phaseColor = '';
+    const deg = phase * 180 / Math.PI;
+    if (deg < 120) { phaseLabel='上升 RISE'; phaseColor='#3fb68b'; }
+    else if (deg < 180) { phaseLabel='停駐 DWELL'; phaseColor='#f5a623'; }
+    else if (deg < 300) { phaseLabel='下降 RETURN'; phaseColor='#4a9eff'; }
+    else { phaseLabel='停駐 DWELL'; phaseColor='#f5a623'; }
+    ctx.fillStyle = phaseColor; ctx.font = 'bold 11px JetBrains Mono, monospace';
+    ctx.fillText(phaseLabel, W*0.55, 28);
+  }
+
+  function drawDisp() {
+    dctx.clearRect(0, 0, DW, DH);
+    const pad = {t:12, b:22, l:20, r:10};
+    const pw = DW-pad.l-pad.r, ph = DH-pad.t-pad.b;
+    const zones = [{f:0,t:120,c:'rgba(63,182,139,.08)',l:'上升'},{f:120,t:180,c:'rgba(245,166,35,.08)',l:'停駐'},{f:180,t:300,c:'rgba(74,158,255,.08)',l:'下降'},{f:300,t:360,c:'rgba(245,166,35,.08)',l:'停駐'}];
+    zones.forEach(z => {
+      const x0=pad.l+(z.f/360)*pw, x1=pad.l+(z.t/360)*pw;
+      dctx.fillStyle=z.c; dctx.fillRect(x0,pad.t,x1-x0,ph);
+      dctx.fillStyle='rgba(255,255,255,.2)'; dctx.font='8px monospace'; dctx.fillText(z.l,x0+3,pad.t+10);
+    });
+    dctx.beginPath();
+    for (let d=0;d<=360;d++) {
+      const r=camRadius(d*Math.PI/180), lift=r-80;
+      const x=pad.l+(d/360)*pw, y=pad.t+ph-(lift/55)*ph;
+      if(d===0) dctx.moveTo(x,y); else dctx.lineTo(x,y);
+    }
+    dctx.strokeStyle='var(--accent)'; dctx.lineWidth=2; dctx.stroke();
+    const curDeg = (((-Math.PI/2-angle)*180/Math.PI)%360+360)%360;
+    const curX=pad.l+(curDeg/360)*pw;
+    dctx.beginPath(); dctx.moveTo(curX,pad.t); dctx.lineTo(curX,pad.t+ph);
+    dctx.strokeStyle='rgba(255,255,255,.5)'; dctx.lineWidth=1.5; dctx.setLineDash([3,3]); dctx.stroke(); dctx.setLineDash([]);
+    dctx.fillStyle='rgba(255,255,255,.25)'; dctx.font='8px monospace';
+    dctx.fillText('0°',pad.l,pad.t+ph+14); dctx.fillText('180°',pad.l+pw/2-10,pad.t+ph+14); dctx.fillText('360°',pad.l+pw-20,pad.t+ph+14);
+  }
+
+  canvas.addEventListener('click', () => { running=!running; });
+  function loop() { if(running) angle+=0.015; drawCam(); drawDisp(); requestAnimationFrame(loop); }
+  loop();
+})();
+
+// FOUR-BAR SIMULATOR
+(function() {
+  const canvas = document.getElementById('fourbarCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  let L1=180, L2=80, L3=160, L4=140;
+  let theta2=0, animRunning=true, raf;
+  let trail=[];
+  const TRAIL_LEN=200;
+
+  const sl1=document.getElementById('sl1'), sl2=document.getElementById('sl2'), sl3=document.getElementById('sl3'), sl4=document.getElementById('sl4');
+  [sl1,sl2,sl3,sl4].forEach(s => {
+    s.addEventListener('input', () => {
+      L1=+sl1.value; L2=+sl2.value; L3=+sl3.value; L4=+sl4.value;
+      document.getElementById('v1').textContent=L1; document.getElementById('v2').textContent=L2;
+      document.getElementById('v3').textContent=L3; document.getElementById('v4').textContent=L4;
+      trail=[]; updateStatus();
+    });
+  });
+
+  function getGrashof() {
+    const lens=[L1,L2,L3,L4];
+    const s=Math.min(...lens), l=Math.max(...lens);
+    const sum_mid=lens.reduce((a,b)=>a+b,0)-s-l;
+    return {satisfies:s+l<=sum_mid, s, l, sum_mid, shortest_idx:lens.indexOf(s)};
+  }
+
+  function updateStatus() {
+    const g=getGrashof();
+    const statusEl=document.getElementById('simStatus');
+    let type='', color='';
+    if (!g.satisfies) { type='雙搖桿（不滿足 Grashof）'; color='status-warn'; }
+    else {
+      const idx=g.shortest_idx;
+      if (idx===0) { type='雙曲柄'; color='status-ok'; }
+      else if (idx===1||idx===3) { type='曲柄搖桿'; color='status-ok'; }
+      else if (idx===2) { type='雙搖桿（連桿最短）'; color='status-warn'; }
+      if (Math.abs(L1-L3)<2&&Math.abs(L2-L4)<2) { type='平行四連桿（雙曲柄特例，等速旋轉）'; color='status-ok'; }
+    }
+    const gStr=g.satisfies?`<span class="status-ok">✓ 滿足 Grashof</span>`:`<span class="status-err">✗ 不滿足 Grashof</span>`;
+    statusEl.innerHTML=`${gStr}<br>型態：<span class="${color}">${type}</span><br>s+l = ${g.s}+${g.l} = ${g.s+g.l}　p+q = ${g.sum_mid}`;
+  }
+
+  function solveFourBar(a2) {
+    const cx=W/2, cy=H*0.55;
+    const O2x=cx-L1/2, O2y=cy, O4x=cx+L1/2, O4y=cy;
+    const Ax=O2x+L2*Math.cos(a2), Ay=O2y+L2*Math.sin(a2);
+    const dx=Ax-O4x, dy=Ay-O4y;
+    const d=Math.sqrt(dx*dx+dy*dy);
+    if (d>L3+L4||d<Math.abs(L3-L4)) return null;
+    const cosA=(L4*L4+d*d-L3*L3)/(2*L4*d);
+    if (Math.abs(cosA)>1) return null;
+    const alpha=Math.acos(cosA), phi=Math.atan2(dy,dx), a4=phi+alpha;
+    const Bx=O4x+L4*Math.cos(a4), By=O4y+L4*Math.sin(a4);
+    const Cx=(Ax+Bx)/2+(-(By-Ay)*0.4), Cy=(Ay+By)/2+((Bx-Ax)*0.4);
+    return {O2x,O2y,O4x,O4y,Ax,Ay,Bx,By,Cx,Cy};
+  }
+
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='rgba(37,43,54,.6)'; ctx.lineWidth=1;
+    for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    const p=solveFourBar(theta2);
+    if(!p){updateStatus();return;}
+    trail.push({x:p.Cx,y:p.Cy}); if(trail.length>TRAIL_LEN)trail.shift();
+    if(trail.length>1){
+      ctx.beginPath(); ctx.moveTo(trail[0].x,trail[0].y);
+      for(let i=1;i<trail.length;i++) ctx.lineTo(trail[i].x,trail[i].y);
+      ctx.strokeStyle='rgba(245,166,35,.5)'; ctx.lineWidth=1.5; ctx.stroke();
+    }
+    ctx.beginPath(); ctx.moveTo(p.O2x,p.O2y); ctx.lineTo(p.O4x,p.O4y);
+    ctx.strokeStyle='rgba(255,255,255,.2)'; ctx.lineWidth=3; ctx.stroke();
+    [[p.O2x,p.O2y],[p.O4x,p.O4y]].forEach(([hx,hy])=>{
+      ctx.beginPath();
+      for(let i=-3;i<=3;i++){ctx.moveTo(hx-8+i*5,hy+12);ctx.lineTo(hx-13+i*5,hy+20);}
+      ctx.strokeStyle='rgba(255,255,255,.15)'; ctx.lineWidth=1.5; ctx.stroke();
+    });
+    ctx.beginPath(); ctx.moveTo(p.O2x,p.O2y); ctx.lineTo(p.Ax,p.Ay); ctx.strokeStyle='#f05a28'; ctx.lineWidth=4; ctx.lineCap='round'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(p.Ax,p.Ay); ctx.lineTo(p.Bx,p.By); ctx.strokeStyle='rgba(232,228,219,.7)'; ctx.lineWidth=3.5; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(p.O4x,p.O4y); ctx.lineTo(p.Bx,p.By); ctx.strokeStyle='#4a9eff'; ctx.lineWidth=4; ctx.stroke();
+    [{x:p.O2x,y:p.O2y,fill:'#f05a28',r:7},{x:p.Ax,y:p.Ay,fill:'#f05a28',r:5.5},{x:p.Bx,y:p.By,fill:'#4a9eff',r:5.5},{x:p.O4x,y:p.O4y,fill:'#4a9eff',r:7}].forEach(j=>{
+      ctx.beginPath(); ctx.arc(j.x,j.y,j.r,0,Math.PI*2); ctx.fillStyle=j.fill; ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,.5)'; ctx.lineWidth=1.5; ctx.stroke();
+    });
+    ctx.beginPath(); ctx.arc(p.Cx,p.Cy,4,0,Math.PI*2); ctx.fillStyle='rgba(245,166,35,.9)'; ctx.fill();
+    ctx.font='13px JetBrains Mono, monospace';
+    ctx.fillStyle='rgba(240,90,40,.8)'; ctx.fillText('L₂',(p.O2x+p.Ax)/2-6,(p.O2y+p.Ay)/2-8);
+    ctx.fillStyle='rgba(232,228,219,.6)'; ctx.fillText('L₃',(p.Ax+p.Bx)/2-6,(p.Ay+p.By)/2-10);
+    ctx.fillStyle='rgba(74,158,255,.8)'; ctx.fillText('L₄',(p.O4x+p.Bx)/2+6,(p.O4y+p.By)/2-8);
+    ctx.fillStyle='rgba(255,255,255,.25)'; ctx.fillText('L₁ 地桿',(p.O2x+p.O4x)/2-24,p.O2y+22);
+    updateStatus();
+  }
+
+  function animate(){theta2+=0.018;draw();raf=requestAnimationFrame(animate);}
+
+  window.toggleAnim=function(){
+    animRunning=!animRunning;
+    const btn=document.getElementById('btnPlay');
+    if(animRunning){btn.textContent='⏸ 暫停';btn.classList.add('active');animate();}
+    else{btn.textContent='▶ 播放';btn.classList.remove('active');cancelAnimationFrame(raf);}
+  };
+
+  window.resetSim=function(){
+    sl1.value=180;sl2.value=80;sl3.value=160;sl4.value=140;
+    L1=180;L2=80;L3=160;L4=140;
+    ['v1','v2','v3','v4'].forEach((id,i)=>{document.getElementById(id).textContent=[180,80,160,140][i];});
+    theta2=0;trail=[];updateStatus();
+  };
+
+  updateStatus();animate();
+})();
+</script>
+</body>
+</html>
