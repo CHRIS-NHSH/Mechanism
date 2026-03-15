@@ -588,15 +588,34 @@ footer ul li a:hover{color:var(--text);}
       </ul>
     </div>
 
-    <div>
-      <div class="img-block" style="height:240px;margin-bottom:1.5rem;">
-        <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Animated_two_spur_gears_1_2.gif&width=320" alt="Two spur gears meshing animation" loading="lazy" style="object-fit:contain;background:#fff;padding:.5rem;" onerror="this.style.outline='2px solid red';this.title='FAIL: Animated_two_spur_gears_1_2.gif';this.style.opacity='0.3'">
-        <div class="img-caption">單式齒輪列 — 一對齒輪直接嚙合，速比 = N₂/N₁</div>
+    <div style="display:flex;flex-direction:column;gap:1.25rem;">
+
+      <!-- 單式齒輪列 -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--accent);letter-spacing:.1em;margin-bottom:.6rem;">SIMPLE GEAR TRAIN · 單式齒輪列</div>
+        <div style="font-size:1.1rem;font-family:var(--mono);color:var(--text);margin-bottom:.5rem;">i = N₂ / N₁ = ω₁ / ω₂</div>
+        <div style="font-size:.82rem;color:var(--muted);margin-bottom:.9rem;">一對齒輪直接嚙合，速比只由兩齒輪齒數決定。</div>
+        <div style="background:var(--bg);border-radius:8px;padding:.85rem 1rem;font-size:.82rem;line-height:1.8;">
+          <div style="color:var(--muted);font-family:var(--mono);font-size:.7rem;margin-bottom:.4rem;">// 範例：腳踏車大盤（44T）→ 飛輪（11T）</div>
+          <div>i = 44 ÷ 11 = <strong style="color:var(--accent);">4</strong></div>
+          <div style="color:var(--muted);">→ 踩一圈，後輪轉 4 圈（高速檔）</div>
+        </div>
       </div>
-      <div class="img-block" style="height:240px;">
-        <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Epicyclic_gear_ratios_2.gif&width=240" alt="Planetary gear animation" loading="lazy" style="object-fit:contain;background:#111;padding:.75rem;" onerror="this.style.outline='2px solid red';this.title='FAIL: Epicyclic_gear_ratios.gif';this.style.opacity='0.3'">
-        <div class="img-caption">複式（行星）齒輪列 — 多組串聯，可達極大速比</div>
+
+      <!-- 複式齒輪列 -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--accent);letter-spacing:.1em;margin-bottom:.6rem;">COMPOUND GEAR TRAIN · 複式齒輪列</div>
+        <div style="font-size:1.1rem;font-family:var(--mono);color:var(--text);margin-bottom:.5rem;">i<sub>total</sub> = i₁ × i₂ × … = (N₂/N₁) × (N₄/N₃) × …</div>
+        <div style="font-size:.82rem;color:var(--muted);margin-bottom:.9rem;">多對齒輪串聯，總速比 = 各級速比連乘，可達極大值。</div>
+        <div style="background:var(--bg);border-radius:8px;padding:.85rem 1rem;font-size:.82rem;line-height:1.8;">
+          <div style="color:var(--muted);font-family:var(--mono);font-size:.7rem;margin-bottom:.4rem;">// 範例：兩級減速（馬達 → 輪子）</div>
+          <div>第一級：N₁=10T → N₂=40T，i₁ = <strong style="color:var(--text);">4</strong></div>
+          <div>第二級：N₃=12T → N₄=60T，i₂ = <strong style="color:var(--text);">5</strong></div>
+          <div style="margin-top:.3rem;">i<sub>total</sub> = 4 × 5 = <strong style="color:var(--accent);">20</strong></div>
+          <div style="color:var(--muted);">→ 馬達轉 20 圈，輪子轉 1 圈，扭矩放大 20 倍</div>
+        </div>
       </div>
+
     </div>
   </div>
 
@@ -629,8 +648,25 @@ footer ul li a:hover{color:var(--text);}
     </div>
 
     <div class="gear-type-card">
-      <div class="gear-type-img">
-        <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Anim_engrenages_droits.gif&width=200" alt="Bevel gears" loading="lazy" onerror="this.style.outline='2px solid red';this.title='FAIL: Animated_bevel_gears.gif';this.style.opacity='0.3'">
+      <div class="gear-type-img" style="display:flex;align-items:center;justify-content:center;background:#0d0f11;">
+        <svg viewBox="0 0 160 140" width="160" height="140" xmlns="http://www.w3.org/2000/svg">
+          <!-- Horizontal axis shaft -->
+          <line x1="10" y1="70" x2="155" y2="70" stroke="#555" stroke-width="2"/>
+          <!-- Vertical axis shaft -->
+          <line x1="80" y1="5" x2="80" y2="130" stroke="#555" stroke-width="2"/>
+          <!-- Right bevel gear (on horizontal shaft) -->
+          <polygon points="80,70 118,52 118,88" fill="#f05a28" opacity=".9"/>
+          <polygon points="118,52 130,46 130,94 118,88" fill="#c94418" opacity=".9"/>
+          <!-- Top bevel gear (on vertical shaft) -->
+          <polygon points="80,70 62,32 98,32" fill="#f05a28" opacity=".9"/>
+          <polygon points="62,32 56,20 104,20 98,32" fill="#c94418" opacity=".9"/>
+          <!-- 90° angle mark -->
+          <path d="M80,70 L88,70 L88,62" fill="none" stroke="#f05a28" stroke-width="1.5" opacity=".7"/>
+          <!-- Labels -->
+          <text x="138" y="73" fill="#aaa" font-size="10" font-family="monospace">軸 A</text>
+          <text x="84" y="16" fill="#aaa" font-size="10" font-family="monospace">軸 B</text>
+          <text x="89" y="65" fill="#f05a28" font-size="9" font-family="monospace">90°</text>
+        </svg>
       </div>
       <div class="gear-type-body">
         <div class="gear-type-name">傘齒輪</div>
@@ -730,56 +766,58 @@ footer ul li a:hover{color:var(--text);}
   <!-- Follower types -->
   <h3 style="font-family:var(--sans);font-weight:700;font-size:1.5rem;letter-spacing:-.02em;margin-bottom:2rem;" class="reveal">四種從動件類型</h3>
   <div class="cam-follower-grid reveal">
-    <div class="cam-follower-card"><span class="cam-follower-icon">🔪</span><div class="cam-follower-name">刀口從動件</div><span class="cam-follower-en">Knife Edge</span><p>結構最簡單，磨損最快，僅用於輕載低速或教學示範。</p></div>
-    <div class="cam-follower-card"><span class="cam-follower-icon">⚪</span><div class="cam-follower-name">滾子從動件</div><span class="cam-follower-en">Roller Follower</span><p>最常用。滾動接觸，摩擦小、耐磨，適合高速重載。引擎配氣機構的標準選擇。</p></div>
-    <div class="cam-follower-card"><span class="cam-follower-icon">▬</span><div class="cam-follower-name">平面從動件</div><span class="cam-follower-en">Flat Face</span><p>接觸面積大，能承受較大側向力，結構緊湊。適合高速場合，但凸輪必須為凸形。</p></div>
-    <div class="cam-follower-card"><span class="cam-follower-icon">🔵</span><div class="cam-follower-name">球面從動件</div><span class="cam-follower-en">Spherical Face</span><p>球面接觸，對偏斜不敏感，用於有角度偏差的三維場合。</p></div>
-  </div>
-  <div style="margin:1.5rem 0 2rem;background:var(--surface);border-radius:12px;padding:1.25rem 1.5rem;border:1px solid var(--border);">
-    <div style="font-size:.75rem;color:var(--muted);font-family:var(--mono);letter-spacing:.08em;margin-bottom:.75rem;">FROM DONG'S TEXTBOOK · 四種類型示意</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center;">
-      <div>
-        <svg viewBox="0 0 80 100" width="80" height="100" style="display:block;margin:0 auto 8px;">
-          <line x1="40" y1="10" x2="40" y2="55" stroke="#f05a28" stroke-width="3"/>
-          <polygon points="35,55 45,55 40,65" fill="#f05a28"/>
-          <ellipse cx="40" cy="78" rx="30" ry="12" fill="none" stroke="#aaa" stroke-width="2"/>
-          <ellipse cx="40" cy="78" rx="20" ry="8" fill="none" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
-        </svg>
-        <div style="font-size:.8rem;color:var(--text);font-weight:600;">刀口</div>
-        <div style="font-size:.7rem;color:var(--muted);">點接觸，易磨損</div>
-      </div>
-      <div>
-        <svg viewBox="0 0 80 100" width="80" height="100" style="display:block;margin:0 auto 8px;">
-          <line x1="40" y1="10" x2="40" y2="48" stroke="#f05a28" stroke-width="3"/>
-          <circle cx="40" cy="58" r="10" fill="none" stroke="#f05a28" stroke-width="2.5"/>
-          <ellipse cx="40" cy="82" rx="30" ry="12" fill="none" stroke="#aaa" stroke-width="2"/>
-          <ellipse cx="40" cy="82" rx="20" ry="8" fill="none" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
-        </svg>
-        <div style="font-size:.8rem;color:var(--text);font-weight:600;">滾子</div>
-        <div style="font-size:.7rem;color:var(--muted);">最常用，低摩擦</div>
-      </div>
-      <div>
-        <svg viewBox="0 0 80 100" width="80" height="100" style="display:block;margin:0 auto 8px;">
-          <line x1="40" y1="10" x2="40" y2="50" stroke="#f05a28" stroke-width="3"/>
-          <rect x="20" y="50" width="40" height="8" fill="#f05a28" rx="2"/>
-          <ellipse cx="40" cy="78" rx="30" ry="12" fill="none" stroke="#aaa" stroke-width="2"/>
-          <ellipse cx="40" cy="78" rx="20" ry="8" fill="none" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
-        </svg>
-        <div style="font-size:.8rem;color:var(--text);font-weight:600;">平面</div>
-        <div style="font-size:.7rem;color:var(--muted);">面接觸，承載大</div>
-      </div>
-      <div>
-        <svg viewBox="0 0 80 100" width="80" height="100" style="display:block;margin:0 auto 8px;">
-          <line x1="40" y1="10" x2="40" y2="48" stroke="#f05a28" stroke-width="3"/>
-          <circle cx="40" cy="58" r="10" fill="none" stroke="#f05a28" stroke-width="2.5"/>
-          <line x1="33" y1="51" x2="47" y2="65" stroke="#f05a28" stroke-width="1.5" stroke-dasharray="2,2"/>
-          <ellipse cx="40" cy="82" rx="30" ry="12" fill="none" stroke="#aaa" stroke-width="2"/>
-          <ellipse cx="40" cy="82" rx="20" ry="8" fill="none" stroke="#aaa" stroke-width="1" stroke-dasharray="4,3"/>
-        </svg>
-        <div style="font-size:.8rem;color:var(--text);font-weight:600;">球面</div>
-        <div style="font-size:.7rem;color:var(--muted);">耐角度偏差</div>
-      </div>
+
+    <div class="cam-follower-card">
+      <svg viewBox="0 0 80 110" width="64" height="72" style="display:block;margin:0 auto 10px;">
+        <line x1="40" y1="8" x2="40" y2="56" stroke="#f05a28" stroke-width="3.5"/>
+        <polygon points="34,56 46,56 40,68" fill="#f05a28"/>
+        <ellipse cx="40" cy="85" rx="32" ry="14" fill="none" stroke="var(--muted)" stroke-width="2"/>
+        <ellipse cx="40" cy="85" rx="20" ry="8" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="4,3"/>
+      </svg>
+      <div class="cam-follower-name">刀口從動件</div>
+      <span class="cam-follower-en">Knife Edge</span>
+      <p>結構最簡單，磨損最快，僅用於輕載低速或教學示範。</p>
     </div>
+
+    <div class="cam-follower-card">
+      <svg viewBox="0 0 80 110" width="64" height="72" style="display:block;margin:0 auto 10px;">
+        <line x1="40" y1="8" x2="40" y2="50" stroke="#f05a28" stroke-width="3.5"/>
+        <circle cx="40" cy="62" r="12" fill="none" stroke="#f05a28" stroke-width="2.5"/>
+        <ellipse cx="40" cy="90" rx="32" ry="14" fill="none" stroke="var(--muted)" stroke-width="2"/>
+        <ellipse cx="40" cy="90" rx="20" ry="8" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="4,3"/>
+      </svg>
+      <div class="cam-follower-name">滾子從動件</div>
+      <span class="cam-follower-en">Roller Follower</span>
+      <p>最常用。滾動接觸，摩擦小、耐磨，適合高速重載。引擎配氣機構的標準選擇。</p>
+    </div>
+
+    <div class="cam-follower-card">
+      <svg viewBox="0 0 80 110" width="64" height="72" style="display:block;margin:0 auto 10px;">
+        <line x1="40" y1="8" x2="40" y2="54" stroke="#f05a28" stroke-width="3.5"/>
+        <rect x="18" y="54" width="44" height="10" fill="#f05a28" rx="2"/>
+        <ellipse cx="40" cy="86" rx="32" ry="14" fill="none" stroke="var(--muted)" stroke-width="2"/>
+        <ellipse cx="40" cy="86" rx="20" ry="8" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="4,3"/>
+      </svg>
+      <div class="cam-follower-name">平面從動件</div>
+      <span class="cam-follower-en">Flat Face</span>
+      <p>接觸面積大，能承受較大側向力，結構緊湊。適合高速場合，但凸輪必須為凸形。</p>
+    </div>
+
+    <div class="cam-follower-card">
+      <svg viewBox="0 0 80 110" width="64" height="72" style="display:block;margin:0 auto 10px;">
+        <line x1="40" y1="8" x2="40" y2="50" stroke="#f05a28" stroke-width="3.5"/>
+        <circle cx="40" cy="62" r="12" fill="none" stroke="#f05a28" stroke-width="2.5"/>
+        <!-- tilt lines suggesting spherical contact -->
+        <line x1="32" y1="53" x2="48" y2="71" stroke="#f05a28" stroke-width="1.5" stroke-dasharray="2,2" opacity="0.6"/>
+        <line x1="48" y1="53" x2="32" y2="71" stroke="#f05a28" stroke-width="1.5" stroke-dasharray="2,2" opacity="0.6"/>
+        <ellipse cx="40" cy="90" rx="32" ry="14" fill="none" stroke="var(--muted)" stroke-width="2"/>
+        <ellipse cx="40" cy="90" rx="20" ry="8" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="4,3"/>
+      </svg>
+      <div class="cam-follower-name">球面從動件</div>
+      <span class="cam-follower-en">Spherical Face</span>
+      <p>球面接觸，對偏斜不敏感，用於有角度偏差的三維場合。</p>
+    </div>
+
   </div>
 
   <!-- Cam types -->
@@ -794,7 +832,7 @@ footer ul li a:hover{color:var(--text);}
       </div>
     </div>
     <div class="cam-type-card">
-      <div class="cam-type-img"><img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Nockenwelle_ani.gif&width=200" alt="Cylindrical cam" loading="lazy" onerror="this.style.outline='2px solid red';this.title='FAIL: Cylindrical_cam.gif';this.style.opacity='0.3'"></div>
+      <div class="cam-type-img" style="display:flex;align-items:center;justify-content:center;background:#0d0f11;"><svg viewBox="0 0 160 140" width="160" height="130" xmlns="http://www.w3.org/2000/svg"><!-- Cylinder body --><ellipse cx="80" cy="30" rx="45" ry="14" fill="#1e2025" stroke="#555" stroke-width="1.5"/><rect x="35" y="30" width="90" height="80" fill="#1e2025" stroke="none"/><line x1="35" y1="30" x2="35" y2="110" stroke="#555" stroke-width="1.5"/><line x1="125" y1="30" x2="125" y2="110" stroke="#555" stroke-width="1.5"/><ellipse cx="80" cy="110" rx="45" ry="14" fill="#1e2025" stroke="#555" stroke-width="1.5"/><!-- Helical groove --><path d="M 38,38 Q 80,28 122,50 Q 80,72 38,62 Q 80,52 122,74 Q 80,96 38,86"       fill="none" stroke="#f05a28" stroke-width="2.5" stroke-linecap="round"/><!-- Follower pin --><line x1="125" y1="50" x2="148" y2="50" stroke="#f05a28" stroke-width="2.5"/><circle cx="148" cy="50" r="5" fill="none" stroke="#f05a28" stroke-width="2"/><!-- Arrow showing axial motion --><line x1="148" y1="60" x2="148" y2="85" stroke="#f05a28" stroke-width="1.5" stroke-dasharray="3,2"/><polygon points="144,83 152,83 148,91" fill="#f05a28" opacity=".8"/><text x="135" y="100" fill="#aaa" font-size="9" font-family="monospace">軸向</text><text x="135" y="110" fill="#aaa" font-size="9" font-family="monospace">移動</text></svg></div></div>
       <div class="cam-type-body">
         <div class="cam-type-name">桶型凸輪（Cylindrical Cam）</div>
         <span class="cam-type-seq">沿軸向移動</span>
